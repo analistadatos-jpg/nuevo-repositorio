@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consola Analítica & Asistente de Voz - Mennar SAS</title>
-    <!-- Librería para captura visual del dashboard (Ojos del asistente) -->
+    <!-- Librería para captura visual del dashboard -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * {
@@ -53,7 +53,7 @@
             overflow: hidden;
         }
 
-        /* Contenedor principal de Power BI */
+        /* Visualizador de Power BI */
         .dashboard-container {
             flex: 3;
             background-color: #ffffff;
@@ -68,7 +68,7 @@
             display: block;
         }
 
-        /* Panel lateral de la Consola e Inteligencia Artificial */
+        /* Panel lateral de la Consola */
         .chat-container {
             flex: 1;
             min-width: 340px;
@@ -181,7 +181,7 @@
     </header>
 
     <div class="container">
-        <!-- Visualización del Reporte de Power BI -->
+        <!-- Visualización de Power BI -->
         <div class="dashboard-container" id="dashArea">
             <iframe 
                 title="Power BI Dashboard Mennar SAS" 
@@ -191,7 +191,7 @@
             </iframe>
         </div>
 
-        <!-- Panel Lateral Interactivo -->
+        <!-- Consola de Conversación -->
         <div class="chat-container">
             <div class="chat-box" id="chatBox">
                 <div class="message bot-message">
@@ -208,13 +208,13 @@
     </div>
 
     <script>
-        // URL base para la conexión con el servidor Flask
+        // URL del túnel ngrok configurado
         const BACKEND_URL = 'https://polish-capitol-construct.ngrok-free.dev/ask';
 
         let recognition;
         let isRecording = false;
 
-        // Configuración del Reconocimiento de Voz
+        // Inicialización de la Web Speech API
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRecognition();
@@ -229,7 +229,7 @@
             };
 
             recognition.onerror = (event) => {
-                console.error("Error micrófono:", event.error);
+                console.error("Error en micrófono:", event.error);
                 stopRecording();
             };
 
@@ -298,14 +298,14 @@
             appendMessage(question, 'user-message');
             input.value = '';
 
-            // Captura visual del área del tablero (Visión del Asistente)
+            // Captura de pantalla automática del dashboard (Visión IA)
             let imageBase64 = null;
             try {
                 const dashArea = document.getElementById('dashArea');
                 const canvas = await html2canvas(dashArea, { useCORS: true, logging: false });
                 imageBase64 = canvas.toDataURL('image/jpeg', 0.85);
             } catch (e) {
-                console.warn("No se pudo capturar la imagen visual:", e);
+                console.warn("No se pudo capturar la imagen del área de trabajo:", e);
             }
 
             try {
@@ -319,18 +319,18 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error(`Error en el servidor (${response.status})`);
+                    throw new Error(`Error HTTP: ${response.status}`);
                 }
 
                 const data = await response.json();
-                const botReply = data.response || "No recibí respuesta.";
+                const botReply = data.response || "No se obtuvo respuesta.";
 
                 appendMessage(botReply, 'bot-message');
                 speak(botReply);
 
             } catch (err) {
-                console.error("Error conectando al backend:", err);
-                const errorMsg = "Ocurrió un problema de comunicación con la consola analítica.";
+                console.error("Error conectando con el backend:", err);
+                const errorMsg = "Ocurrió un problema al conectar con la consola analítica.";
                 appendMessage(errorMsg, 'bot-message');
                 speak(errorMsg);
             }
