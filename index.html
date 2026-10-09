@@ -196,7 +196,7 @@
         <div class="chat-container">
             <div class="chat-box" id="chatBox">
                 <div class="message bot-message">
-                    Hola, soy Analista creada por Inteligencia de Negocios. Dime qué información estás necesitando.
+                    Hola, soy el asistente analítico de Mennar SAS. Puedo analizar tu reporte en pantalla y consultar la información consolidada en tu carpeta Power_Bi. ¿Qué consulta deseas realizar?
                 </div>
             </div>
 
@@ -300,7 +300,20 @@
             appendMessage(question, 'user-message');
             input.value = '';
 
-            const payload = JSON.stringify({ question: question });
+            // Captura de pantalla automática del dashboard (Visión IA)
+            let imageBase64 = null;
+            try {
+                const dashArea = document.getElementById('dashArea');
+                const canvas = await html2canvas(dashArea, { useCORS: true, logging: false });
+                imageBase64 = canvas.toDataURL('image/jpeg', 0.85);
+            } catch (e) {
+                console.warn("No se pudo capturar la imagen del área de trabajo:", e);
+            }
+
+            const payload = JSON.stringify({ 
+                question: question,
+                image: imageBase64
+            });
 
             const headers = { 
                 'Content-Type': 'application/json',
@@ -320,7 +333,7 @@
                     if (!response.ok) throw new Error(`HTTP Local ${response.status}`);
                 } catch (localErr) {
                     console.error("Error conectando con el backend:", localErr);
-                    const errorMsg = "Hola, soy Analista creada por Inteligencia de Negocios. Dime qué información estás necesitando.\n\nOcurrió un problema de conexión temporal con el servidor local.";
+                    const errorMsg = "Ocurrió un problema al conectar con la consola analítica. Verifica que 'python app.py' esté ejecutándose.";
                     appendMessage(errorMsg, 'bot-message');
                     speak(errorMsg);
                     return;
