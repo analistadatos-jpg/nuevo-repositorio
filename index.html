@@ -76,16 +76,17 @@
             flex-direction: column;
             background-color: #fdfdfd;
             padding: 25px;
+            overflow-y: auto;
         }
 
         .ai-header {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .ai-header h2 {
             color: #0b2545;
             font-size: 1.4rem;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
 
         .ai-header p {
@@ -94,51 +95,15 @@
             line-height: 1.4;
         }
 
-        /* Zona de instrucciones interactivas */
-        .instruction-box {
-            background-color: #eef4f8;
-            border-left: 4px solid #134074;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-
-        .instruction-box h4 {
-            color: #134074;
-            margin-bottom: 5px;
-            font-size: 0.95rem;
-        }
-
-        .instruction-box ul {
-            list-style-type: none;
-            font-size: 0.85rem;
-            color: #2f3e46;
-        }
-
-        .instruction-box li {
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .instruction-box li::before {
-            content: "•";
-            color: #134074;
-            font-weight: bold;
-        }
-
         /* Botón de Explorador de Archivos Local */
         .file-input-container {
             margin-bottom: 15px;
         }
 
-        /* Ocultamos el input feo nativo */
         .file-input-container input[type="file"] {
             display: none;
         }
 
-        /* Estilo del botón personalizado para el explorador */
         .file-custom-btn {
             display: flex;
             align-items: center;
@@ -147,7 +112,7 @@
             background-color: #ffffff;
             color: #134074;
             border: 2px dashed #134074;
-            padding: 14px;
+            padding: 12px;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
@@ -159,8 +124,55 @@
             background-color: #eef4f8;
         }
 
+        /* Panel de Rutas Rápidas del Servidor */
+        .path-box {
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+
+        .path-box h4 {
+            color: #1e293b;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 4px;
+        }
+
+        .path-list {
+            list-style: none;
+            font-size: 0.78rem;
+            color: #475569;
+        }
+
+        .path-item {
+            margin-bottom: 8px;
+            padding: 6px;
+            background: #ffffff;
+            border-radius: 4px;
+            border-left: 3px solid #64748b;
+            word-break: break-all;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+
+        .path-item:hover {
+            background: #f1f5f9;
+        }
+
+        .path-item strong {
+            color: #0f172a;
+            display: block;
+            margin-bottom: 2px;
+        }
+
         /* Área de notas/copiado de datos */
         .notes-area {
+            min-height: 100px;
             flex-grow: 1;
             width: 100%;
             padding: 12px;
@@ -170,7 +182,7 @@
             font-size: 0.9rem;
             color: #334155;
             background-color: #fff;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .notes-area:focus {
@@ -179,7 +191,7 @@
             box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
         }
 
-        /* Botón de acceso sólido a Gemini */
+        /* Botón de acceso a Gemini */
         .gemini-btn {
             display: flex;
             align-items: center;
@@ -201,15 +213,11 @@
             background-color: #1557b0;
         }
 
-        .gemini-btn:active {
-            transform: scale(0.98);
-        }
-
         .footer-note {
             text-align: center;
             font-size: 0.75rem;
             color: #94a3b8;
-            margin-top: 15px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -225,7 +233,7 @@
     <!-- Área de Trabajo de Pantalla Dividida -->
     <div class="main-container">
         
-        <!-- Panel Izquierdo: Power BI Público Restablecido Completamente -->
+        <!-- Panel Izquierdo: Power BI Público Restablecido -->
         <section class="dashboard-panel">
             <iframe 
                 title="Reporte Farmacéutico - Ejecución e Ingresos" 
@@ -238,7 +246,7 @@
         <section class="ai-panel">
             <div class="ai-header">
                 <h2>Asistente Operativo</h2>
-                <p>Usa esta consola corporativa para auditar los reportes, buscar tus bases de datos y analizarlas con IA.</p>
+                <p>Usa los accesos directos de abajo para saber dónde están alojados los datos analíticos originales de tu PC.</p>
             </div>
 
             <!-- Botón del Explorador de Archivos Local -->
@@ -249,40 +257,37 @@
                 <input type="file" id="local-file-picker" accept=".xlsx, .xls, .csv, .pdf" onchange="mostrarNombre(this)">
             </div>
 
-            <div class="instruction-box">
-                <h4>Flujo de Trabajo Simplificado:</h4>
-                <ul>
-                    <li>Filtra los datos visuales en el reporte de la izquierda de manera interactiva.</li>
-                    <li>Usa el buscador superior para rastrear tus bases de datos o PDFs en tu PC.</li>
-                    <li>Redacta tus hallazgos o pega apuntes clave abajo en el cuadro de texto.</li>
-                    <li>Envía tu análisis final o consulta al Gemini seguro de tu empresa.</li>
+            <!-- Panel de Rutas de Datos Locales Corporativos -->
+            <div class="path-box">
+                <h4>📂 Repositorio Local de Datos (Origen)</h4>
+                <ul class="path-list">
+                    <li class="path-item" onclick="copiarRuta(this)">
+                        <strong>Mennar Total:</strong> C:\Users\ADMIN\Downloads\Analista_Datos_Informacion_2025_2026\Equipos_Inteligencia_De_Negocio_2_07_2026\Informacion\Power_Bi\Datos_Total_2026_Mennar\Datos_Total_2026_Mennar
+                    </li>
+                    <li class="path-item" onclick="copiarRuta(this)">
+                        <strong>Datos CSV 2:</strong> C:\Users\ADMIN\Downloads\Analista_Datos_Informacion_2025_2026\Equipos_Inteligencia_De_Negocio_2_07_2026\Informacion\Power_Bi\Datos_Total_2026_Mennar\Datos_Total_2026 CVS2
+                    </li>
+                    <li class="path-item" onclick="copiarRuta(this)">
+                        <strong>Financieros:</strong> C:\Users\ADMIN\Downloads\Analista_Datos_Informacion_2025_2026\Equipos_Inteligencia_De_Negocio_2_07_2026\Informacion\Power_Bi\Financieros
+                    </li>
+                    <li class="path-item" onclick="copiarRuta(this)">
+                        <strong>Laboratorio:</strong> C:\Users\ADMIN\Downloads\Analista_Datos_Informacion_2025_2026\Equipos_Inteligencia_De_Negocio_2_07_2026\Informacion\Power_Bi\Laboratorio
+                    </li>
+                    <li class="path-item" onclick="copiarRuta(this)">
+                        <strong>Contratos:</strong> C:\Users\ADMIN\Downloads\Analista_Datos_Informacion_2025_2026\Equipos_Inteligencia_De_Negocio_2_07_2026\Informacion\Power_Bi\Contrato
+                    </li>
+                    <li class="path-item" onclick="copiarRuta(this)">
+                        <strong>Inventario y Costos por Punto:</strong> C:\Users\ADMIN\Downloads\Analista_Datos_Informacion_2025_2026\Equipos_Inteligencia_De_Negocio_2_07_2026\Informacion\Power_Bi\Inventario_Costos_por Punto
+                    </li>
+                    <li class="path-item" onclick="copiarRuta(this)">
+                        <strong>Población:</strong> C:\Users\ADMIN\Downloads\Analista_Datos_Informacion_2025_2026\Equipos_Inteligencia_De_Negocio_2_07_2026\Informacion\Power_Bi\Poblacion
+                    </li>
                 </ul>
             </div>
 
-            <!-- Espacio para que el usuario redacte o copie datos -->
-            <textarea class="notes-area" id="user-notes" placeholder="Escribe aquí tus preguntas o pega los datos numéricos extraídos para el análisis farmacéutico..."></textarea>
+            <!-- Espacio para redactar apuntes -->
+            <textarea class="notes-area" id="user-notes" placeholder="Haz clic en cualquier ruta de arriba para recordarla, redacta tus preguntas o pega los datos extraídos para Gemini..."></textarea>
 
-            <!-- Botón directo al entorno seguro de Gemini -->
+            <!-- Botón directo a Gemini -->
             <a href="https://google.com" target="_blank" class="gemini-btn">
                 🤖 Enviar Consulta a Gemini Corporativo ↗
-            </a>
-            
-            <p class="footer-note">Protección de datos garantizada a través del entorno de Google Workspace de tu empresa.</p>
-        </section>
-
-    </div>
-
-    <script>
-        function mostrarNombre(input) {
-            if (input.files && input.files[0]) {
-                const nombreArchivo = input.files[0].name;
-                document.querySelector('.file-custom-btn').innerHTML = `✅ Seleccionado: <strong>${nombreArchivo}</strong>`;
-                document.querySelector('.file-custom-btn').style.borderStyle = 'solid';
-                document.querySelector('.file-custom-btn').style.borderColor = '#10b981';
-                document.querySelector('.file-custom-btn').style.color = '#10b981';
-            }
-        }
-    </script>
-
-</body>
-</html>
