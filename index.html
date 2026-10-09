@@ -47,30 +47,105 @@
             font-weight: 400;
         }
 
-        /* Contenedor principal de pantalla dividida */
+        /* Contenedor principal estructurado */
         .main-container {
             display: flex;
             height: calc(100vh - 60px);
             width: 100%;
         }
 
-        /* Sección del Dashboard (Izquierda) */
-        .dashboard-panel {
-            width: 60%;
+        /* Sección de Accesos de Control (Izquierda) */
+        .control-panel {
+            width: 50%;
             height: 100%;
             background-color: #ffffff;
             border-right: 2px solid #e1e8ed;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
         }
 
-        .dashboard-panel iframe {
+        .panel-title-center {
+            text-align: center;
+            color: #0b2545;
+            margin-bottom: 10px;
+        }
+
+        .panel-title-center h3 {
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+        }
+
+        .panel-title-center p {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        /* Botón gigante para el Power BI */
+        .pbi-big-btn {
             width: 100%;
-            height: 100%;
-            border: none;
+            max-width: 450px;
+            background-color: #f2c811;
+            color: #000000;
+            text-decoration: none;
+            padding: 25px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 6px 16px rgba(242, 200, 17, 0.25);
+            transition: all 0.2s;
+            text-align: center;
+            border: 2px solid #dcb50f;
+        }
+
+        .pbi-big-btn:hover {
+            background-color: #e5bd0e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(242, 200, 17, 0.4);
+        }
+
+        /* Botón de Explorador de Archivos Local */
+        .file-input-container {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .file-input-container input[type="file"] {
+            display: none;
+        }
+
+        .file-custom-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background-color: #ffffff;
+            color: #134074;
+            border: 2px dashed #134074;
+            padding: 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .file-custom-btn:hover {
+            background-color: #eef4f8;
+            transform: translateY(-2px);
         }
 
         /* Sección del Agente IA (Derecha) */
         .ai-panel {
-            width: 40%;
+            width: 50%;
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -93,35 +168,6 @@
             color: #5c6b73;
             font-size: 0.9rem;
             line-height: 1.4;
-        }
-
-        /* Botón de Explorador de Archivos Local */
-        .file-input-container {
-            margin-bottom: 15px;
-        }
-
-        .file-input-container input[type="file"] {
-            display: none;
-        }
-
-        .file-custom-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background-color: #ffffff;
-            color: #134074;
-            border: 2px dashed #134074;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.2s;
-        }
-
-        .file-custom-btn:hover {
-            background-color: #eef4f8;
         }
 
         /* Panel de Rutas Rápidas del Servidor */
@@ -172,7 +218,7 @@
 
         /* Área de notas/copiado de datos */
         .notes-area {
-            min-height: 100px;
+            min-height: 120px;
             flex-grow: 1;
             width: 100%;
             padding: 12px;
@@ -200,10 +246,10 @@
             background-color: #1a73e8;
             color: white;
             text-decoration: none;
-            padding: 16px;
+            padding: 18px;
             border-radius: 8px;
             font-weight: 600;
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             transition: background-color 0.2s, transform 0.1s;
             box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2);
             text-align: center;
@@ -233,21 +279,17 @@
     <!-- Área de Trabajo de Pantalla Dividida -->
     <div class="main-container">
         
-        <!-- Panel Izquierdo: Power BI Público Incrustado Corregido -->
-        <section class="dashboard-panel">
-            <iframe 
-                title="Reporte Farmacéutico - Ejecución e Ingresos" 
-                src="https://powerbi.com" 
-                allowFullScreen="true">
-            </iframe>
-        </section>
-
-        <!-- Panel Derecho: Interfaz de Operación -->
-        <section class="ai-panel">
-            <div class="ai-header">
-                <h2>Asistente Operativo</h2>
-                <p>Usa los accesos directos de abajo para saber dónde están alojados los datos analíticos originales de tu PC.</p>
+        <!-- Panel Izquierdo: Control de Insumos y Dashboard Externo -->
+        <section class="control-panel">
+            <div class="panel-title-center">
+                <h3>Visualización e Insumos</h3>
+                <p>Abre el reporte analítico oficial y gestiona tus archivos locales de origen.</p>
             </div>
+
+            <!-- Botón de apertura externa garantizada para el Power BI -->
+            <a href="https://powerbi.com" target="_blank" class="pbi-big-btn">
+                📈 Abrir Reporte de Power BI ↗
+            </a>
 
             <!-- Botón del Explorador de Archivos Local -->
             <div class="file-input-container">
@@ -255,6 +297,14 @@
                     📁 Buscar Archivos en esta Computadora
                 </label>
                 <input type="file" id="local-file-picker" accept=".xlsx, .xls, .csv, .pdf" onchange="mostrarNombre(this)">
+            </div>
+        </section>
+
+        <!-- Panel Derecho: Interfaz de Operación e IA -->
+        <section class="ai-panel">
+            <div class="ai-header">
+                <h2>Asistente Operativo Inteligente</h2>
+                <p>Usa los accesos directos de abajo para saber dónde están alojados los datos analíticos originales de tu PC.</p>
             </div>
 
             <!-- Panel de Rutas de Datos Locales Corporativos -->
@@ -271,23 +321,3 @@
                         <strong>Financieros:</strong> C:\Users\ADMIN\Downloads\Analista_Datos_Informacion_2025_2026\Equipos_Inteligencia_De_Negocio_2_07_2026\Informacion\Power_Bi\Financieros
                     </li>
                     <li class="path-item" onclick="copiarRuta(this)">
-                        <strong>Laboratorio:</strong> C:\Users\ADMIN\Downloads\Analista_Datos_Informacion_2025_2026\Equipos_Inteligencia_De_Negocio_2_07_2026\Informacion\Power_Bi\Laboratorio
-                    </li>
-                    <li class="path-item" onclick="copiarRuta(this)">
-                        <strong>Contratos:</strong> C:\Users\ADMIN\Downloads\Analista_Datos_Informacion_2025_2026\Equipos_Inteligencia_De_Negocio_2_07_2026\Informacion\Power_Bi\Contrato
-                    </li>
-                    <li class="path-item" onclick="copiarRuta(this)">
-                        <strong>Inventario y Costos por Punto:</strong> C:\Users\ADMIN\Downloads\Analista_Datos_Informacion_2025_2026\Equipos_Inteligencia_De_Negocio_2_07_2026\Informacion\Power_Bi\Inventario_Costos_por Punto
-                    </li>
-                    <li class="path-item" onclick="copiarRuta(this)">
-                        <strong>Población:</strong> C:\Users\ADMIN\Downloads\Analista_Datos_Informacion_2025_2026\Equipos_Inteligencia_De_Negocio_2_07_2026\Informacion\Power_Bi\Poblacion
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Espacio para redactar apuntes -->
-            <textarea class="notes-area" id="user-notes" placeholder="Haz clic en cualquier ruta de arriba para recordarla, redacta tus preguntas o pega los datos extraídos para Gemini..."></textarea>
-
-            <!-- Botón directo a Gemini -->
-            <a href="https://google.com" target="_blank" class="gemini-btn">
-                🤖 Enviar Consulta a Gemini Corporativo ↗
