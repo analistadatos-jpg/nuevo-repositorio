@@ -209,9 +209,9 @@
     </div>
 
     <script>
-        // URLs del Backend (Conexión Local Primaria y Túnel Ngrok de Respaldo)
-        const LOCAL_URL = 'http://127.0.0.1:5000/ask';
+        // URLs del Backend (Túnel ngrok y Local de Respaldo)
         const NGROK_URL = 'https://polish-capitol-construct.ngrok-free.dev/ask';
+        const LOCAL_URL = 'http://127.0.0.1:5000/ask';
 
         let recognition;
         let isRecording = false;
@@ -300,7 +300,7 @@
             appendMessage(question, 'user-message');
             input.value = '';
 
-            // Captura de pantalla del dashboard
+            // Captura de pantalla automática del dashboard (Visión IA)
             let imageBase64 = null;
             try {
                 const dashArea = document.getElementById('dashArea');
@@ -322,17 +322,17 @@
 
             let response;
             try {
-                // Intento 1: Conexión Local Directa
-                response = await fetch(LOCAL_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload });
-                if (!response.ok) throw new Error(`HTTP Local ${response.status}`);
-            } catch (localErr) {
-                console.warn("Fallo en conexión local, intentando túnel ngrok...", localErr);
+                // Intento 1: A través de ngrok
+                response = await fetch(NGROK_URL, { method: 'POST', headers: headers, body: payload });
+                if (!response.ok) throw new Error(`HTTP ngrok ${response.status}`);
+            } catch (ngrokErr) {
+                console.warn("Fallo ngrok, intentando conexión local...", ngrokErr);
                 try {
-                    // Intento 2: A través del túnel Ngrok
-                    response = await fetch(NGROK_URL, { method: 'POST', headers: headers, body: payload });
-                    if (!response.ok) throw new Error(`HTTP Ngrok ${response.status}`);
-                } catch (ngrokErr) {
-                    console.error("Error conectando con el backend:", ngrokErr);
+                    // Intento 2: Conexión local de respaldo
+                    response = await fetch(LOCAL_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload });
+                    if (!response.ok) throw new Error(`HTTP Local ${response.status}`);
+                } catch (localErr) {
+                    console.error("Error conectando con el backend:", localErr);
                     const errorMsg = "Ocurrió un problema al conectar con la consola analítica. Verifica que 'python app.py' esté ejecutándose.";
                     appendMessage(errorMsg, 'bot-message');
                     speak(errorMsg);
