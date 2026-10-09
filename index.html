@@ -44,7 +44,7 @@
             font-weight: 400;
         }
 
-        /* Contenedor principal de dos columnas fijas */
+        /* Contenedor principal estructurado */
         .main-container {
             display: flex;
             height: calc(100vh - 60px);
@@ -102,7 +102,6 @@
 
         .pbi-big-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(242, 200, 17, 0.4);
         }
 
         .file-input-container {
@@ -134,7 +133,7 @@
             background-color: #eef4f8;
         }
 
-        /* Panel Derecho: Inteligencia Artificial con estructura vertical estricta (55%) */
+        /* Panel Derecho: Área Corporativa e IA (55%) */
         .ai-panel {
             width: 55%;
             height: 100%;
@@ -151,7 +150,7 @@
             border-radius: 6px;
             padding: 12px;
             margin-bottom: 15px;
-            flex-shrink: 0; /* Impide que este bloque se encoja o colapse */
+            flex-shrink: 0;
         }
 
         .path-box h4 {
@@ -188,13 +187,13 @@
             background: #f1f5f9;
         }
 
-        /* Contenedor del Chat Obligatorio (Fijo en pantalla) */
+        /* Contenedor del Asistente Virtual Ajustado */
         .chat-container {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            flex-grow: 1; /* Obliga al chat a tomar todo el espacio sobrante inferior */
-            min-height: 0; /* Habilita el control de scroll interno estricto */
+            flex-grow: 1;
+            min-height: 0;
             background: #ffffff;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
@@ -240,7 +239,7 @@
             100% { transform: scale(1); }
         }
 
-        /* Área de respuesta gris con barra de scroll independiente */
+        /* Área de respuesta gris */
         .response-box {
             flex-grow: 1;
             background-color: #f8fafc;
@@ -299,7 +298,7 @@
         </div>
     </nav>
 
-    <!-- Cuerpo de Pantalla Dividida Corregido -->
+    <!-- Cuerpo de Pantalla Dividida -->
     <div class="main-container">
         
         <!-- Panel Izquierdo -->
@@ -309,8 +308,8 @@
                 <p>Gestiona tu cuadro de Power BI y tus fuentes locales de datos.</p>
             </div>
 
-            <!-- Botón de Power BI Corregido con URL Pública Directa -->
-            <a href="https://app.powerbi.com/view?r=eyJrIjoiMmYzOGJlOWYtMGI2Ny00ZWQ2LTk1OWYtNWU4NzMxYTllY2YyIiwidCI6IjY4NzA5YjE3LWU4NmUtNGI2Ny1iYjhiLWU3ZWM1ODRiYTkxYiIsImMiOjR9&pageName=406adfdcb7a2277f1cb2" target="_blank" class="pbi-big-btn">
+            <!-- Botón de Power BI Público Directo -->
+            <a href="https://powerbi.com" target="_blank" class="pbi-big-btn">
                 📈 Abrir Reporte de Power BI ↗
             </a>
 
@@ -322,7 +321,7 @@
             </div>
         </section>
 
-        <!-- Panel Derecho Unificado e Inmune a Desbordamiento -->
+        <!-- Panel Derecho Con Contenedores Corregidos -->
         <section class="ai-panel">
             
             <div class="path-box">
@@ -330,4 +329,7 @@
                 <ul class="path-list">
                     <li class="path-item" onclick="cargarEntornoMennar('Entorno de la APP principal', 'C:\\Users\\ADMIN\\Downloads\\Analista_Datos_Informacion_2025_2026\\Equipos_Inteligencia_De_Negocio_2_07_2026\\Informacion\\Power_Bi\\App_1604_2026')">
                         <strong>📍 Directorio de la APP 2026:</strong> ...\Power_Bi\App_1604_2026
+                    </li>
+                    <li class="path-item corporate" onclick="cargarEntornoMennar('Mennar Total', 'C:\\Users\\ADMIN\\Downloads\\Analista_Datos_Informacion_2025_2026\\Equipos_Inteligencia_De_Negocio_2_07_2026\\Informacion\\Power_Bi\\Datos_Total_2026_Mennar\\Datos_Total_2026_Mennar')">
+                        <strong>Mennar Total:</strong> ...\Power_Bi\Datos_Total_2026_Mennar
                     </li>
