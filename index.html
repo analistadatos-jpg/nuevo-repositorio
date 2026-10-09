@@ -19,14 +19,12 @@
             background-color: #f4f6f9;
         }
 
-        /* Barra de navegación superior */
         .navbar {
             height: 60px;
             background-color: #0b2545;
             color: #ffffff;
             display: flex;
             align-items: center;
-            justify-content: space-between;
             padding: 0 25px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.15);
             position: relative;
@@ -34,9 +32,6 @@
         }
 
         .navbar-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
             font-size: 1.25rem;
             font-weight: 600;
             letter-spacing: 0.5px;
@@ -48,14 +43,13 @@
             font-weight: 400;
         }
 
-        /* Contenedor principal estructurado */
         .main-container {
             display: flex;
             height: calc(100vh - 60px);
             width: 100%;
         }
 
-        /* Panel Izquierdo: Accesos de Control (Fijo 45%) */
+        /* Panel Izquierdo */
         .control-panel {
             width: 45%;
             height: 100%;
@@ -72,7 +66,6 @@
         .panel-title-center {
             text-align: center;
             color: #0b2545;
-            margin-bottom: 10px;
         }
 
         .panel-title-center h3 {
@@ -101,13 +94,11 @@
             gap: 15px;
             box-shadow: 0 6px 16px rgba(242, 200, 17, 0.25);
             transition: all 0.2s;
-            text-align: center;
             border: 2px solid #dcb50f;
         }
 
         .pbi-big-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(242, 200, 17, 0.4);
         }
 
         .file-input-container {
@@ -130,45 +121,40 @@
             padding: 18px;
             border-radius: 12px;
             font-weight: 600;
-            font-size: 1.05rem;
             cursor: pointer;
-            text-align: center;
             transition: all 0.2s;
         }
 
         .file-custom-btn:hover {
             background-color: #eef4f8;
-            transform: translateY(-2px);
         }
 
-        /* Panel Derecho: Área Corporativa e IA (Fijo 55% con Scroll Inteligente) */
+        /* Panel Derecho de la IA */
         .ai-panel {
             width: 55%;
             height: 100%;
             display: flex;
             flex-direction: column;
-            background-color: #fdfdfd;
             padding: 25px;
+            background-color: #fdfdfd;
         }
 
-        /* Sección de carpetas fijada arriba */
         .path-box {
             background-color: #f8fafc;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
             padding: 12px;
-            margin-bottom: 20px;
-            flex-shrink: 0; /* Impide que colapse o se encoja */
+            margin-bottom: 15px;
+            flex-shrink: 0;
         }
 
         .path-box h4 {
             color: #1e293b;
             font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 4px;
+            padding-bottom: 2px;
         }
 
         .path-list {
@@ -178,26 +164,21 @@
         }
 
         .path-item {
-            margin-bottom: 6px;
-            padding: 6px;
+            margin-bottom: 4px;
+            padding: 5px;
             background: #ffffff;
             border-radius: 4px;
             border-left: 3px solid #134074;
             cursor: pointer;
-            transition: background 0.1s;
         }
 
-        .path-item:hover {
-            background: #f1f5f9;
-        }
-
-        /* Sección del Chat que se auto-ajusta al espacio sobrante */
+        /* Interfaz de Chat Fija */
         .chat-container {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            flex-grow: 1; /* Toma todo el espacio disponible */
-            min-height: 0; /* Permite scroll interno si el espacio es muy corto */
+            gap: 12px;
+            flex-grow: 1;
+            min-height: 0;
             background: #ffffff;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
@@ -213,18 +194,13 @@
 
         .notes-area {
             width: 100%;
-            height: 90px;
+            height: 80px;
             padding: 12px 50px 12px 12px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
             resize: none;
             font-size: 0.95rem;
             line-height: 1.4;
-        }
-
-        .notes-area:focus {
-            outline: none;
-            border-color: #1a73e8;
         }
 
         .mic-btn {
@@ -248,7 +224,6 @@
             100% { transform: scale(1); }
         }
 
-        /* Consola de Respuestas Internas de la IA con Scroll propio */
         .response-box {
             flex-grow: 1;
             background-color: #f8fafc;
@@ -262,7 +237,6 @@
             line-height: 1.5;
         }
 
-        /* Fila de Botones Operativos */
         .action-row {
             display: flex;
             gap: 12px;
@@ -275,28 +249,19 @@
             justify-content: center;
             gap: 8px;
             color: white;
-            text-decoration: none;
             padding: 15px;
             border-radius: 8px;
             font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
             border: none;
-            transition: transform 0.1s, opacity 0.2s;
+            transition: all 0.1s;
             text-align: center;
-        }
-
-        .action-btn:hover {
-            opacity: 0.95;
-        }
-
-        .action-btn:active {
-            transform: scale(0.98);
         }
 
         .btn-process { background-color: #0b2545; flex-grow: 1; }
         .btn-listen { background-color: #475569; }
-        .btn-gemini-mennar { background-color: #1a73e8; flex-grow: 1.5; box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2); }
+        .btn-gemini-mennar { background-color: #1a73e8; flex-grow: 1.2; box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2); }
 
         .footer-note {
             text-align: center;
@@ -309,29 +274,24 @@
 </head>
 <body>
 
-    <!-- Barra de Navegación -->
     <nav class="navbar">
         <div class="navbar-brand">
-            📊 Plataforma de Control Farmacéutico <span>| Mennar SAS Corporate</span>
+            📊 Plataforma de Control Farmacéutico <span>| Asistente Virtual Inteligente</span>
         </div>
     </nav>
 
-    <!-- Área de Trabajo Unificada -->
     <div class="main-container">
-        
-        <!-- Panel Izquierdo: Gestión de Tableros e Insumos -->
+        <!-- Panel de Control Izquierdo -->
         <section class="control-panel">
             <div class="panel-title-center">
                 <h3>Visualización e Insumos</h3>
                 <p>Gestiona tu cuadro de Power BI y tus fuentes locales de datos.</p>
             </div>
 
-            <!-- Botón del Power BI verificado -->
-            <a href="https://app.powerbi.com/view?r=eyJrIjoiMmYzOGJlOWYtMGI2Ny00ZWQ2LTk1OWYtNWU4NzMxYTllY2YyIiwidCI6IjY4NzA5YjE3LWU4NmUtNGI2Ny1iYjhiLWU3ZWM1ODRiYTkxYiIsImMiOjR9&pageName=406adfdcb7a2277f1cb2" target="_blank" class="pbi-big-btn">
+            <a href="https://powerbi.com" target="_blank" class="pbi-big-btn">
                 📈 Abrir Reporte de Power BI ↗
             </a>
 
-            <!-- Botón del Explorador de Archivos Local -->
             <div class="file-input-container">
                 <label for="local-file-picker" class="file-custom-btn">
                     📁 Buscar Archivos en esta Computadora
@@ -340,9 +300,20 @@
             </div>
         </section>
 
-        <!-- Panel Derecho: Asistente Operativo Integrado de Voz y Escritura -->
+        <!-- Panel de Asistente de IA Derecho Fijo -->
         <section class="ai-panel">
-            
-            <!-- Bloque de Carpetas Corporativas -->
             <div class="path-box">
                 <h4>📂 Repositorios Locales Mennar SAS (Clic para armar consulta)</h4>
+                <ul class="path-list">
+                    <li class="path-item" onclick="cargarEntornoMennar('Mennar Total', 'C:\\Users\\ADMIN\\Downloads\\Analista_Datos_Informacion_2025_2026\\Equipos_Inteligencia_De_Negocio_2_07_2026\\Informacion\\Power_Bi\\Datos_Total_2026_Mennar\\Datos_Total_2026_Mennar')"><strong>Mennar Total:</strong> ...\Power_Bi\Datos_Total_2026_Mennar</li>
+                    <li class="path-item" onclick="cargarEntornoMennar('Financieros', 'C:\\Users\\ADMIN\\Downloads\\Analista_Datos_Informacion_2025_2026\\Equipos_Inteligencia_De_Negocio_2_07_2026\\Informacion\\Power_Bi\\Financieros')"><strong>Financieros:</strong> ...\Power_Bi\Financieros</li>
+                    <li class="path-item" onclick="cargarEntornoMennar('Inventario y Costos', 'C:\\Users\\ADMIN\\Downloads\\Analista_Datos_Informacion_2025_2026\\Equipos_Inteligencia_De_Negocio_2_07_2026\\Informacion\\Power_Bi\\Inventario_Costos_por Punto')"><strong>Inventario_Costos_por Punto:</strong> ...\Power_Bi\Inventario_Costos_por Punto</li>
+                </ul>
+            </div>
+
+            <div class="chat-container">
+                <div class="input-wrapper">
+                    <textarea class="notes-area" id="user-notes" placeholder="Escribe tu consulta o presiona el micrófono para hablar..."></textarea>
+                    <button class="mic-btn" id="start-record-btn" title="Dictar por Voz">🎙️</button>
+                </div>
+
