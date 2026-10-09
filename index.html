@@ -19,6 +19,7 @@
             background-color: #f4f6f9;
         }
 
+        /* Barra de navegación superior */
         .navbar {
             height: 60px;
             background-color: #0b2545;
@@ -43,13 +44,14 @@
             font-weight: 400;
         }
 
+        /* Contenedor principal de dos columnas fijas */
         .main-container {
             display: flex;
             height: calc(100vh - 60px);
             width: 100%;
         }
 
-        /* Panel Izquierdo */
+        /* Panel Izquierdo: Controles Fijos (45%) */
         .control-panel {
             width: 45%;
             height: 100%;
@@ -92,13 +94,15 @@
             align-items: center;
             justify-content: center;
             gap: 15px;
-            box-shadow: 0 6px 166px rgba(242, 200, 17, 0.25);
+            box-shadow: 0 6px 16px rgba(242, 200, 17, 0.25);
             transition: all 0.2s;
+            text-align: center;
             border: 2px solid #dcb50f;
         }
 
         .pbi-big-btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(242, 200, 17, 0.4);
         }
 
         .file-input-container {
@@ -121,6 +125,7 @@
             padding: 18px;
             border-radius: 12px;
             font-weight: 600;
+            font-size: 1.05rem;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -129,7 +134,7 @@
             background-color: #eef4f8;
         }
 
-        /* Panel Derecho de la IA */
+        /* Panel Derecho: Inteligencia Artificial con estructura vertical estricta (55%) */
         .ai-panel {
             width: 55%;
             height: 100%;
@@ -139,19 +144,21 @@
             background-color: #fdfdfd;
         }
 
+        /* Bloque de repositorios arriba fijo */
         .path-box {
             background-color: #f8fafc;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
             padding: 12px;
             margin-bottom: 15px;
-            flex-shrink: 0;
+            flex-shrink: 0; /* Impide que este bloque se encoja o colapse */
         }
 
         .path-box h4 {
             color: #1e293b;
             font-size: 0.85rem;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
             margin-bottom: 6px;
             border-bottom: 1px solid #e2e8f0;
             padding-bottom: 4px;
@@ -161,8 +168,6 @@
             list-style: none;
             font-size: 0.78rem;
             color: #475569;
-            max-height: 150px;
-            overflow-y: auto;
         }
 
         .path-item {
@@ -183,17 +188,17 @@
             background: #f1f5f9;
         }
 
-        /* Interfaz de Chat Fija */
+        /* Contenedor del Chat Obligatorio (Fijo en pantalla) */
         .chat-container {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            flex-grow: 1;
-            min-height: 0;
+            flex-grow: 1; /* Obliga al chat a tomar todo el espacio sobrante inferior */
+            min-height: 0; /* Habilita el control de scroll interno estricto */
             background: #ffffff;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
-            padding: 20px;
+            padding: 15px;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
@@ -205,8 +210,8 @@
 
         .notes-area {
             width: 100%;
-            height: 80px;
-            padding: 12px 50px 12px 12px;
+            height: 75px;
+            padding: 10px 50px 10px 10px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
             resize: none;
@@ -217,7 +222,7 @@
         .mic-btn {
             position: absolute;
             right: 15px;
-            top: 12px;
+            top: 10px;
             background: none;
             border: none;
             font-size: 1.5rem;
@@ -235,12 +240,13 @@
             100% { transform: scale(1); }
         }
 
+        /* Área de respuesta gris con barra de scroll independiente */
         .response-box {
             flex-grow: 1;
             background-color: #f8fafc;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
-            padding: 15px;
+            padding: 12px;
             font-size: 0.95rem;
             color: #1e293b;
             overflow-y: auto;
@@ -248,6 +254,7 @@
             line-height: 1.5;
         }
 
+        /* Fila inferior de botones operativos */
         .action-row {
             display: flex;
             gap: 12px;
@@ -260,10 +267,10 @@
             justify-content: center;
             gap: 8px;
             color: white;
-            padding: 15px;
-            border-radius: 8px;
+            padding: 14px;
+            border-radius: 6px;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.95rem;
             cursor: pointer;
             border: none;
             transition: all 0.1s;
@@ -278,28 +285,32 @@
             text-align: center;
             font-size: 0.75rem;
             color: #94a3b8;
-            margin-top: 10px;
+            margin-top: 5px;
             flex-shrink: 0;
         }
     </style>
 </head>
 <body>
 
+    <!-- Barra de Navegación -->
     <nav class="navbar">
         <div class="navbar-brand">
             📊 Plataforma de Control Farmacéutico <span>| Mennar SAS Corporate</span>
         </div>
     </nav>
 
+    <!-- Cuerpo de Pantalla Dividida Corregido -->
     <div class="main-container">
-        <!-- Panel de Control Izquierdo -->
+        
+        <!-- Panel Izquierdo -->
         <section class="control-panel">
             <div class="panel-title-center">
                 <h3>Visualización e Insumos</h3>
                 <p>Gestiona tu cuadro de Power BI y tus fuentes locales de datos.</p>
             </div>
 
-            <a href="https://powerbi.com" target="_blank" class="pbi-big-btn">
+            <!-- Botón de Power BI Corregido con URL Pública Directa -->
+            <a href="https://app.powerbi.com/view?r=eyJrIjoiMmYzOGJlOWYtMGI2Ny00ZWQ2LTk1OWYtNWU4NzMxYTllY2YyIiwidCI6IjY4NzA5YjE3LWU4NmUtNGI2Ny1iYjhiLWU3ZWM1ODRiYTkxYiIsImMiOjR9&pageName=406adfdcb7a2277f1cb2" target="_blank" class="pbi-big-btn">
                 📈 Abrir Reporte de Power BI ↗
             </a>
 
@@ -311,18 +322,12 @@
             </div>
         </section>
 
-        <!-- Panel de Asistente de IA Derecho Fijo -->
+        <!-- Panel Derecho Unificado e Inmune a Desbordamiento -->
         <section class="ai-panel">
+            
             <div class="path-box">
                 <h4>📂 Repositorios Locales Mennar SAS (Clic para armar consulta)</h4>
                 <ul class="path-list">
-                    <!-- Ruta de la APP priorizada en color rojo de alerta visual -->
                     <li class="path-item" onclick="cargarEntornoMennar('Entorno de la APP principal', 'C:\\Users\\ADMIN\\Downloads\\Analista_Datos_Informacion_2025_2026\\Equipos_Inteligencia_De_Negocio_2_07_2026\\Informacion\\Power_Bi\\App_1604_2026')">
                         <strong>📍 Directorio de la APP 2026:</strong> ...\Power_Bi\App_1604_2026
-                    </li>
-                    <li class="path-item corporate" onclick="cargarEntornoMennar('Mennar Total', 'C:\\Users\\ADMIN\\Downloads\\Analista_Datos_Informacion_2025_2026\\Equipos_Inteligencia_De_Negocio_2_07_2026\\Informacion\\Power_Bi\\Datos_Total_2026_Mennar\\Datos_Total_2026_Mennar')">
-                        <strong>Mennar Total:</strong> ...\Power_Bi\Datos_Total_2026_Mennar
-                    </li>
-                    <li class="path-item corporate" onclick="cargarEntornoMennar('Financieros', 'C:\\Users\\ADMIN\\Downloads\\Analista_Datos_Informacion_2025_2026\\Equipos_Inteligencia_De_Negocio_2_07_2026\\Informacion\\Power_Bi\\Financieros')">
-                        <strong>Financieros:</strong> ...\Power_Bi\Financieros
                     </li>
