@@ -3,361 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consola Analítica & Asistente de Voz - Mennar SAS</title>
-    <!-- Librería para captura visual del dashboard -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <title>Asistente Analítico - Mennar SAS</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #f4f7f6;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        header {
-            background-color: #1a252f;
-            color: #ffffff;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            z-index: 10;
-        }
-
-        header h1 {
-            font-size: 1.3rem;
-            font-weight: 600;
-        }
-
-        .status-badge {
-            font-size: 0.85rem;
-            color: #28a745;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .container {
-            display: flex;
-            flex: 1;
-            height: calc(100vh - 58px);
-            overflow: hidden;
-        }
-
-        /* Visualizador de Power BI */
-        .dashboard-container {
-            flex: 3;
-            background-color: #ffffff;
-            position: relative;
-            border-right: 2px solid #e0e0e0;
-        }
-
-        .dashboard-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
-
-        /* Panel lateral de la Consola */
-        .chat-container {
-            flex: 1;
-            min-width: 340px;
-            max-width: 450px;
-            display: flex;
-            flex-direction: column;
-            background-color: #ffffff;
-            padding: 15px;
-            box-shadow: -2px 0 5px rgba(0,0,0,0.05);
-        }
-
-        .chat-box {
-            flex: 1;
-            overflow-y: auto;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 12px;
-            background-color: #fafafa;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .message {
-            padding: 10px 14px;
-            border-radius: 8px;
-            max-width: 88%;
-            font-size: 0.92rem;
-            line-height: 1.45;
-            word-wrap: break-word;
-            white-space: pre-wrap;
-        }
-
-        .user-message {
-            background-color: #007bff;
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 2px;
-        }
-
-        .bot-message {
-            background-color: #e9ecef;
-            color: #212529;
-            align-self: flex-start;
-            border-bottom-left-radius: 2px;
-        }
-
-        .controls {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        input[type="text"] {
-            flex: 1;
-            padding: 10px 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            outline: none;
-            font-size: 0.9rem;
-            transition: border-color 0.2s;
-        }
-
-        input[type="text"]:focus {
-            border-color: #007bff;
-        }
-
-        button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 6px;
-            background-color: #28a745;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: background 0.2s;
-        }
-
-        button:hover {
-            background-color: #218838;
-        }
-
-        button.mic-btn {
-            background-color: #17a2b8;
-            padding: 10px 12px;
-        }
-
-        button.mic-btn:hover {
-            background-color: #138496;
-        }
-
-        button.recording {
-            background-color: #dc3545;
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.6; }
-            100% { opacity: 1; }
-        }
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
+        .chat-container { max-width: 700px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; text-align: center; }
+        .chat-box { height: 400px; border: 1px solid #ddd; border-radius: 5px; padding: 10px; overflow-y: scroll; margin-bottom: 15px; background: #fafafa; }
+        .message { margin-bottom: 10px; padding: 10px; border-radius: 5px; line-height: 1.4; }
+        .user-msg { background: #d1e7dd; text-align: right; }
+        .bot-msg { background: #cfe2ff; text-align: left; }
+        .input-group { display: flex; gap: 10px; }
+        input[type="text"] { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        input[type="file"] { display: none; }
+        .file-btn { background: #6c757d; color: white; padding: 10px 15px; border-radius: 4px; cursor: pointer; }
+        button.send-btn { background: #0d6efd; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+        button.send-btn:hover { background: #0b5ed7; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Consola Analítica & Asistente de Voz - Mennar SAS</h1>
-        <div class="status-badge">● En línea</div>
-    </header>
-
-    <div class="container">
-        <!-- Visualización de Power BI -->
-        <div class="dashboard-container" id="dashArea">
-            <iframe 
-                title="Power BI Dashboard Mennar SAS" 
-                src="https://app.powerbi.com/view?r=eyJrIjoiMmYzOGJlOWYtMGI2Ny00ZWQ2LTk1OWYtNWU4NzMxYTllY2YyIiwidCI6IjY4NzA5YjE3LWU4NmUtNGI2Ny1iYjhiLWU3ZWM1ODRiYTkxYiIsImMiOjR9&pageName=406adfdcb7a2277f1cb2" 
-                frameborder="0" 
-                allowFullScreen="true">
-            </iframe>
-        </div>
-
-        <!-- Consola de Conversación -->
-        <div class="chat-container">
-            <div class="chat-box" id="chatBox">
-                <div class="message bot-message">
-                    Hola, soy el asistente analítico de Mennar SAS. Puedo analizar tu reporte en pantalla y consultar la información consolidada en tu carpeta Power_Bi. ¿Qué consulta deseas realizar?
-                </div>
-            </div>
-
-            <div class="controls">
-                <input type="text" id="userInput" placeholder="Escribe tu consulta..." onkeypress="handleKeyPress(event)">
-                <button class="mic-btn" id="micBtn" onclick="toggleRecognition()" title="Usar micrófono">🎤</button>
-                <button onclick="enviarConsulta()">Enviar</button>
-            </div>
-        </div>
+<div class="chat-container">
+    <h2>Asistente Analítico - Mennar SAS</h2>
+    <div id="chatBox" class="chat-box"></div>
+    
+    <div class="input-group">
+        <label for="imageInput" class="file-btn">📷 Imagen</label>
+        <input type="file" id="imageInput" accept="image/*">
+        <input type="text" id="questionInput" placeholder="Escribe tu consulta sobre dispensación..." onkeypress="handleKeyPress(event)">
+        <button class="send-btn" onclick="sendMessage()">Enviar</button>
     </div>
+</div>
 
-    <script>
-        // URLs del Backend (Túnel ngrok y Local de Respaldo)
-        const NGROK_URL = 'https://polish-capitol-construct.ngrok-free.dev/ask';
-        const LOCAL_URL = 'http://127.0.0.1:5000/ask';
+<script>
+    let base64Image = null;
 
-        let recognition;
-        let isRecording = false;
-
-        // Inicialización de la Web Speech API
-        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            recognition = new SpeechRecognition();
-            recognition.lang = 'es-ES';
-            recognition.continuous = false;
-            recognition.interimResults = false;
-
-            recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript;
-                document.getElementById('userInput').value = transcript;
-                enviarConsulta();
-            };
-
-            recognition.onerror = (event) => {
-                console.error("Error en micrófono:", event.error);
-                stopRecording();
-            };
-
-            recognition.onend = () => {
-                stopRecording();
-            };
-        } else {
-            const micBtn = document.getElementById('micBtn');
-            if (micBtn) micBtn.style.display = 'none';
-        }
-
-        function toggleRecognition() {
-            if (!recognition) return;
-            if (isRecording) {
-                recognition.stop();
-                stopRecording();
-            } else {
-                try {
-                    recognition.start();
-                    startRecording();
-                } catch(e) {
-                    console.error("No se pudo iniciar el micrófono:", e);
-                }
+    document.getElementById('imageInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                base64Image = reader.result;
+                alert("Imagen cargada y lista para enviar.");
             }
+            reader.readAsDataURL(file);
         }
+    });
 
-        function startRecording() {
-            isRecording = true;
-            const btn = document.getElementById('micBtn');
-            btn.classList.add('recording');
-            btn.innerText = '🛑';
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
         }
+    }
 
-        function stopRecording() {
-            isRecording = false;
-            const btn = document.getElementById('micBtn');
-            btn.classList.remove('recording');
-            btn.innerText = '🎤';
-        }
+    async function sendMessage() {
+        const qInput = document.getElementById('questionInput');
+        const chatBox = document.getElementById('chatBox');
+        const question = qInput.value.trim();
 
-        function appendMessage(text, className) {
-            const chatBox = document.getElementById('chatBox');
-            const msgDiv = document.createElement('div');
-            msgDiv.className = `message ${className}`;
-            msgDiv.innerText = text;
-            chatBox.appendChild(msgDiv);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
+        if (!question && !base64Image) return;
 
-        function speak(text) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'es-ES';
-                utterance.rate = 1.0;
-                window.speechSynthesis.speak(utterance);
-            }
-        }
+        // Mostrar mensaje del usuario
+        chatBox.innerHTML += `<div class="message user-msg"><b>Tú:</b> ${question}</div>`;
+        qInput.value = '';
+        chatBox.scrollTop = chatBox.scrollHeight;
 
-        async function enviarConsulta() {
-            const input = document.getElementById('userInput');
-            const question = input.value.trim();
-
-            if (!question) return;
-
-            appendMessage(question, 'user-message');
-            input.value = '';
-
-            // Captura de pantalla automática del dashboard (Visión IA)
-            let imageBase64 = null;
-            try {
-                const dashArea = document.getElementById('dashArea');
-                const canvas = await html2canvas(dashArea, { useCORS: true, logging: false });
-                imageBase64 = canvas.toDataURL('image/jpeg', 0.85);
-            } catch (e) {
-                console.warn("No se pudo capturar la imagen del área de trabajo:", e);
-            }
-
-            const payload = JSON.stringify({ 
-                question: question,
-                image: imageBase64
+        try {
+            const response = await fetch('http://127.0.0.1:5000/ask', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question: question, image: base64Image })
             });
 
-            const headers = { 
-                'Content-Type': 'application/json',
-                'ngrok-skip-browser-warning': 'true'
-            };
-
-            let response;
-            try {
-                // Intento 1: A través de ngrok
-                response = await fetch(NGROK_URL, { method: 'POST', headers: headers, body: payload });
-                if (!response.ok) throw new Error(`HTTP ngrok ${response.status}`);
-            } catch (ngrokErr) {
-                console.warn("Fallo ngrok, intentando conexión local...", ngrokErr);
-                try {
-                    // Intento 2: Conexión local de respaldo
-                    response = await fetch(LOCAL_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload });
-                    if (!response.ok) throw new Error(`HTTP Local ${response.status}`);
-                } catch (localErr) {
-                    console.error("Error conectando con el backend:", localErr);
-                    const errorMsg = "Ocurrió un problema al conectar con la consola analítica. Verifica que 'python app.py' esté ejecutándose.";
-                    appendMessage(errorMsg, 'bot-message');
-                    speak(errorMsg);
-                    return;
-                }
-            }
-
-            try {
-                const data = await response.json();
-                const botReply = data.response || "No se obtuvo respuesta.";
-                appendMessage(botReply, 'bot-message');
-                speak(botReply);
-            } catch (parseErr) {
-                console.error("Error parseando respuesta JSON:", parseErr);
-                const errorMsg = "Error procesando la respuesta del servidor.";
-                appendMessage(errorMsg, 'bot-message');
-                speak(errorMsg);
-            }
+            const data = await response.json();
+            
+            // Mostrar respuesta del bot
+            chatBox.innerHTML += `<div class="message bot-msg"><b>Asistente:</b> ${data.response}</div>`;
+        } catch (error) {
+            chatBox.innerHTML += `<div class="message bot-msg" style="color:red;"><b>Error:</b> No se pudo conectar con el servidor Flask.</div>`;
         }
 
-        function handleKeyPress(e) {
-            if (e.key === 'Enter') {
-                enviarConsulta();
-            }
-        }
-    </script>
+        base64Image = null;
+        document.getElementById('imageInput').value = '';
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+</script>
+
 </body>
 </html>
