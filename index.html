@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asistente de IA & Dashboard Mennar SAS</title>
+    <title>Consola Analítica & Asistente de Voz - Mennar SAS</title>
     <style>
         * {
             box-sizing: border-box;
@@ -17,6 +17,7 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
+            overflow: hidden;
         }
 
         header {
@@ -27,91 +28,121 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 10;
         }
 
         header h1 {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .status-badge {
+            font-size: 0.85rem;
+            color: #28a745;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .container {
             display: flex;
             flex: 1;
+            height: calc(100vh - 58px);
             overflow: hidden;
         }
 
+        /* Contenedor Power BI */
         .dashboard-container {
             flex: 3;
-            border-right: 2px solid #e0e0e0;
             background-color: #ffffff;
+            position: relative;
+            border-right: 2px solid #e0e0e0;
         }
 
-        iframe {
+        .dashboard-container iframe {
             width: 100%;
             height: 100%;
             border: none;
+            display: block;
         }
 
+        /* Contenedor Asistente IA */
         .chat-container {
             flex: 1;
-            min-width: 320px;
+            min-width: 340px;
+            max-width: 450px;
             display: flex;
             flex-direction: column;
             background-color: #ffffff;
-            padding: 20px;
+            padding: 15px;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.05);
         }
 
         .chat-box {
             flex: 1;
             overflow-y: auto;
-            border: 1px solid #e0e0e0;
+            border: 1px solid #e2e8f0;
             border-radius: 8px;
             padding: 15px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             background-color: #fafafa;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .message {
-            margin-bottom: 12px;
             padding: 10px 14px;
             border-radius: 8px;
-            max-width: 85%;
-            font-size: 0.95rem;
-            line-height: 1.4;
+            max-width: 88%;
+            font-size: 0.92rem;
+            line-height: 1.45;
+            word-wrap: break-word;
         }
 
         .user-message {
             background-color: #007bff;
             color: white;
-            margin-left: auto;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
         }
 
         .bot-message {
             background-color: #e9ecef;
-            color: #333;
-            margin-right: auto;
+            color: #212529;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
         }
 
         .controls {
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            align-items: center;
         }
 
         input[type="text"] {
             flex: 1;
-            padding: 12px;
-            border: 1px solid #ccc;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
             border-radius: 6px;
             outline: none;
+            font-size: 0.9rem;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #007bff;
         }
 
         button {
-            padding: 12px 18px;
+            padding: 10px 15px;
             border: none;
             border-radius: 6px;
             background-color: #28a745;
             color: white;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
+            font-size: 0.9rem;
             transition: background 0.2s;
         }
 
@@ -121,6 +152,7 @@
 
         button.mic-btn {
             background-color: #17a2b8;
+            padding: 10px 12px;
         }
 
         button.mic-btn:hover {
@@ -134,7 +166,7 @@
 
         @keyframes pulse {
             0% { opacity: 1; }
-            50% { opacity: 0.5; }
+            50% { opacity: 0.6; }
             100% { opacity: 1; }
         }
     </style>
@@ -143,16 +175,21 @@
 
     <header>
         <h1>Consola Analítica & Asistente de Voz - Mennar SAS</h1>
-        <span id="status" style="font-size: 0.85rem; color: #28a745;">● En línea</span>
+        <div class="status-badge">● En línea</div>
     </header>
 
     <div class="container">
-        <!-- Power BI Dashboard Embed -->
+        <!-- Power BI Dashboard Incorporado con Blindaje de Carga -->
         <div class="dashboard-container">
-            <iframe title="Power BI Dashboard" src="https://app.powerbi.com/view?r=eyJrIjoiMDllNmM1ODUtMDM1YS00YzE2LThjYWItOTY3ZTlmYzkxYWViIiwidCI6IjI0YzRmMjViLTk1MDYtNGFjMS05MmExLThlYzljNmFiYmFlZSIsImMiOjR9" allowFullName="true"></iframe>
+            <iframe 
+                title="Power BI Dashboard Mennar SAS" 
+                src="https://app.powerbi.com/view?r=eyJrIjoiMDllNmM1ODUtMDM1YS00YzE2LThjYWItOTY3ZTlmYzkxYWViIiwidCI6IjI0YzRmMjViLTk1MDYtNGFjMS05MmExLThlYzljNmFiYmFlZSIsImMiOjR9" 
+                frameborder="0" 
+                allowFullScreen="true">
+            </iframe>
         </div>
 
-        <!-- Panel de Chat / Voz -->
+        <!-- Panel del Asistente de IA (Texto / Voz) -->
         <div class="chat-container">
             <div class="chat-box" id="chatBox">
                 <div class="message bot-message">
@@ -162,20 +199,20 @@
 
             <div class="controls">
                 <input type="text" id="userInput" placeholder="Escribe tu consulta..." onkeypress="handleKeyPress(event)">
-                <button class="mic-btn" id="micBtn" onclick="toggleRecognition()">🎤</button>
+                <button class="mic-btn" id="micBtn" onclick="toggleRecognition()" title="Usar micrófono">🎤</button>
                 <button onclick="enviarConsulta()">Enviar</button>
             </div>
         </div>
     </div>
 
     <script>
-        // URL pública de tu backend servida a través de ngrok
+        // Endpoint dinámico ngrok apuntando al backend local
         const BACKEND_URL = 'https://polish-capitol-construct.ngrok-free.dev/ask';
 
         let recognition;
         let isRecording = false;
 
-        // Configuración de Reconocimiento de Voz (Web Speech API)
+        // Configuración de Web Speech API para reconocimiento por voz
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRecognition();
@@ -190,7 +227,7 @@
             };
 
             recognition.onerror = (event) => {
-                console.error("Error de voz:", event.error);
+                console.error("Error en reconocimiento de voz:", event.error);
                 stopRecording();
             };
 
@@ -198,7 +235,8 @@
                 stopRecording();
             };
         } else {
-            document.getElementById('micBtn').style.display = 'none';
+            const micBtn = document.getElementById('micBtn');
+            if (micBtn) micBtn.style.display = 'none';
             console.warn("Navegador no soporta Web Speech API");
         }
 
@@ -208,8 +246,12 @@
                 recognition.stop();
                 stopRecording();
             } else {
-                recognition.start();
-                startRecording();
+                try {
+                    recognition.start();
+                    startRecording();
+                } catch(e) {
+                    console.error(e);
+                }
             }
         }
 
@@ -238,7 +280,7 @@
 
         function speak(text) {
             if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel(); // Cancelar lecturas previas
+                window.speechSynthesis.cancel();
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = 'es-ES';
                 utterance.rate = 1.0;
@@ -263,18 +305,18 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error(`Error en servidor: ${response.status}`);
+                    throw new Error(`Error en el servidor backend (${response.status})`);
                 }
 
                 const data = await response.json();
-                const botReply = data.response || "No recibí respuesta.";
+                const botReply = data.response || "No recibí respuesta del servidor.";
 
                 appendMessage(botReply, 'bot-message');
                 speak(botReply);
 
             } catch (err) {
                 console.error(err);
-                const errorMsg = "Ocurrió un problema de conexión con el backend local.";
+                const errorMsg = "Ocurrió un problema al conectar con el backend local.";
                 appendMessage(errorMsg, 'bot-message');
                 speak(errorMsg);
             }
