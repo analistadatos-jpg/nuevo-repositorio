@@ -3,333 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consola Analítica - Mennar SAS</title>
+    <title>Consola Analítica & Asistente IA - Mennar SAS</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body, html { height: 100%; width: 100%; overflow: hidden; background-color: #f4f6f9; }
 
-        body, html {
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            background-color: #f4f6f9;
-        }
-
-        /* Barra de navegación superior */
         .navbar {
-            height: 60px;
-            background-color: #0b2545;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            padding: 0 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-            position: relative;
-            z-index: 10;
+            height: 60px; background-color: #0b2545; color: #ffffff;
+            display: flex; align-items: center; padding: 0 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15); z-index: 10;
         }
+        .navbar-brand { font-size: 1.25rem; font-weight: 600; }
+        .navbar-brand span { color: #8da9c4; font-size: 0.9rem; font-weight: 400; }
 
-        .navbar-brand {
-            font-size: 1.25rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
+        .main-container { display: flex; height: calc(100vh - 60px); width: 100%; }
 
-        .navbar-brand span {
-            color: #8da9c4;
-            font-size: 0.9rem;
-            font-weight: 400;
-        }
+        /* Panel Izquierdo: Visualización Power BI (55%) */
+        .pbi-panel { width: 55%; height: 100%; border-right: 2px solid #e1e8ed; background-color: #ffffff; }
+        .pbi-panel iframe { width: 100%; height: 100%; border: none; }
 
-        /* Contenedor principal estructurado */
-        .main-container {
-            display: flex;
-            height: calc(100vh - 60px);
-            width: 100%;
-        }
+        /* Panel Derecho: Asistente IA y Voz (45%) */
+        .ai-panel { width: 45%; height: 100%; display: flex; flex-direction: column; padding: 20px; background-color: #fdfdfd; gap: 15px; }
 
-        /* Panel Izquierdo: Controles Fijos (45%) */
-        .control-panel {
-            width: 45%;
-            height: 100%;
-            background-color: #ffffff;
-            border-right: 2px solid #e1e8ed;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 25px;
-        }
+        .chat-container { display: flex; flex-direction: column; gap: 12px; flex-grow: 1; min-height: 0; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; }
 
-        .panel-title-center {
-            text-align: center;
-            color: #0b2545;
-        }
+        .input-wrapper { position: relative; width: 100%; }
+        .notes-area { width: 100%; height: 80px; padding: 10px 45px 10px 10px; border: 1px solid #cbd5e1; border-radius: 6px; resize: none; font-size: 0.95rem; }
+        
+        .mic-btn { position: absolute; right: 12px; top: 12px; background: none; border: none; font-size: 1.4rem; cursor: pointer; }
+        .mic-active { animation: pulse 1.2s infinite; color: #ef4444; }
 
-        .panel-title-center h3 {
-            font-size: 1.6rem;
-            margin-bottom: 8px;
-        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
 
-        .panel-title-center p {
-            color: #64748b;
-            font-size: 0.95rem;
-        }
+        .response-box { flex-grow: 1; background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 12px; font-size: 0.95rem; color: #1e293b; overflow-y: auto; white-space: pre-line; line-height: 1.5; }
 
-        .pbi-big-btn {
-            width: 100%;
-            max-width: 420px;
-            background-color: #f2c811;
-            color: #000000;
-            text-decoration: none;
-            padding: 22px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 1.25rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            box-shadow: 0 6px 16px rgba(242, 200, 17, 0.25);
-            transition: all 0.2s;
-            text-align: center;
-            border: 2px solid #dcb50f;
-        }
-
-        .pbi-big-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .file-input-container {
-            width: 100%;
-            max-width: 420px;
-        }
-
-        .file-input-container input[type="file"] {
-            display: none;
-        }
-
-        .file-custom-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            background-color: #ffffff;
-            color: #134074;
-            border: 2px dashed #134074;
-            padding: 18px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1.05rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .file-custom-btn:hover {
-            background-color: #eef4f8;
-        }
-
-        /* Panel Derecho: Área Corporativa e IA (55%) */
-        .ai-panel {
-            width: 55%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            padding: 25px;
-            background-color: #fdfdfd;
-        }
-
-        /* Bloque de repositorios arriba fijo */
-        .path-box {
-            background-color: #f8fafc;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            padding: 12px;
-            margin-bottom: 15px;
-            flex-shrink: 0;
-        }
-
-        .path-box h4 {
-            color: #1e293b;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 6px;
-            border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 4px;
-        }
-
-        .path-list {
-            list-style: none;
-            font-size: 0.78rem;
-            color: #475569;
-        }
-
-        .path-item {
-            margin-bottom: 5px;
-            padding: 6px;
-            background: #ffffff;
-            border-radius: 4px;
-            border-left: 3px solid #ef4444;
-            cursor: pointer;
-            transition: background 0.1s;
-        }
-
-        .path-item.corporate {
-            border-left-color: #134074;
-        }
-
-        .path-item:hover {
-            background: #f1f5f9;
-        }
-
-        /* Contenedor del Asistente Virtual Ajustado */
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            flex-grow: 1;
-            min-height: 0;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-        }
-
-        .input-wrapper {
-            position: relative;
-            width: 100%;
-            flex-shrink: 0;
-        }
-
-        .notes-area {
-            width: 100%;
-            height: 75px;
-            padding: 10px 50px 10px 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            resize: none;
-            font-size: 0.95rem;
-            line-height: 1.4;
-        }
-
-        .mic-btn {
-            position: absolute;
-            right: 15px;
-            top: 10px;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        .mic-active {
-            animation: pulse 1.2s infinite;
-            color: #ef4444;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        /* Área de respuesta gris */
-        .response-box {
-            flex-grow: 1;
-            background-color: #f8fafc;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            padding: 12px;
-            font-size: 0.95rem;
-            color: #1e293b;
-            overflow-y: auto;
-            white-space: pre-line;
-            line-height: 1.5;
-        }
-
-        /* Fila inferior de botones operativos */
-        .action-row {
-            display: flex;
-            gap: 12px;
-            flex-shrink: 0;
-        }
-
-        .action-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            color: white;
-            padding: 14px;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            border: none;
-            transition: all 0.1s;
-            text-align: center;
-        }
-
-        .btn-process { background-color: #0b2545; flex-grow: 1; }
-        .btn-listen { background-color: #475569; }
-        .btn-gemini-mennar { background-color: #1a73e8; flex-grow: 1.2; box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2); }
-
-        .footer-note {
-            text-align: center;
-            font-size: 0.75rem;
-            color: #94a3b8;
-            margin-top: 5px;
-            flex-shrink: 0;
-        }
+        .action-row { display: flex; gap: 10px; }
+        .action-btn { flex: 1; padding: 12px; border-radius: 6px; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: none; color: white; transition: background 0.2s; }
+        .btn-ask { background-color: #0b2545; }
+        .btn-speak { background-color: #1a73e8; }
+        .btn-ask:hover { background-color: #134074; }
+        .btn-speak:hover { background-color: #1557b0; }
     </style>
 </head>
 <body>
 
-    <!-- Barra de Navegación -->
     <nav class="navbar">
         <div class="navbar-brand">
-            📊 Plataforma de Control Farmacéutico <span>| Mennar SAS Corporate</span>
+            📊 Plataforma de Control Farmacéutico <span>| Mennar SAS IA Copilot</span>
         </div>
     </nav>
 
-    <!-- Cuerpo de Pantalla Dividida -->
     <div class="main-container">
         
-        <!-- Panel Izquierdo -->
-        <section class="control-panel">
-            <div class="panel-title-center">
-                <h3>Visualización e Insumos</h3>
-                <p>Gestiona tu cuadro de Power BI y tus fuentes locales de datos.</p>
-            </div>
+        <!-- Dashboard Power BI integrado -->
+        <section class="pbi-panel">
+            <iframe title="PowerBI Report" src="https://app.powerbi.com/view?r=eyJrIjoiMmYzOGJlOWYtMGI2Ny00ZWQ2LTk1OWYtNWU4NzMxYTllY2YyIiwidCI6IjY4NzA5YjE3LWU4NmUtNGI2Ny1iYjhiLWU3ZWM1ODRiYTkxYiIsImMiOjR9&pageName=406adfdcb7a2277f1cb2" allowFullScreen="true"></iframe>
+        </section>
 
-            <!-- Botón de Power BI Público Directo -->
-            <a href="https://powerbi.com" target="_blank" class="pbi-big-btn">
-                📈 Abrir Reporte de Power BI ↗
-            </a>
+        <!-- Panel de Interacción por Voz e Inteligencia Artificial -->
+        <section class="ai-panel">
+            <h3>🤖 Asistente Virtual Mennar SAS</h3>
+            
+            <div class="chat-container">
+                <div class="input-wrapper">
+                    <textarea id="userInput" class="notes-area" placeholder="Escribe tu consulta o presiona el micrófono para hablar..."></textarea>
+                    <button id="micBtn" class="mic-btn" title="Activar micrófono">🎙️</button>
+                </div>
 
-            <div class="file-input-container">
-                <label for="local-file-picker" class="file-custom-btn">
-                    📁 Buscar Archivos en esta Computadora
-                </label>
-                <input type="file" id="local-file-picker" accept=".xlsx, .xls, .csv, .pdf" onchange="mostrarNombre(this)">
+                <div class="action-row">
+                    <button class="action-btn btn-ask" onclick="enviarConsulta()">Consultar IA</button>
+                    <button class="action-btn btn-speak" onclick="leerRespuesta()">🔊 Leer Respuesta</button>
+                </div>
+
+                <div id="responseBox" class="response-box">
+                    Las respuestas analíticas y explicaciones sobre los datos locales y tableros aparecerán aquí...
+                </div>
             </div>
         </section>
 
-        <!-- Panel Derecho Con Contenedores Corregidos -->
-        <section class="ai-panel">
-            
-            <div class="path-box">
-                <h4>📂 Repositorios Locales Mennar SAS (Clic para armar consulta)</h4>
-                <ul class="path-list">
-                    <li class="path-item" onclick="cargarEntornoMennar('Entorno de la APP principal', 'C:\\Users\\ADMIN\\Downloads\\Analista_Datos_Informacion_2025_2026\\Equipos_Inteligencia_De_Negocio_2_07_2026\\Informacion\\Power_Bi\\App_1604_2026')">
-                        <strong>📍 Directorio de la APP 2026:</strong> ...\Power_Bi\App_1604_2026
-                    </li>
-                    <li class="path-item corporate" onclick="cargarEntornoMennar('Mennar Total', 'C:\\Users\\ADMIN\\Downloads\\Analista_Datos_Informacion_2025_2026\\Equipos_Inteligencia_De_Negocio_2_07_2026\\Informacion\\Power_Bi\\Datos_Total_2026_Mennar\\Datos_Total_2026_Mennar')">
-                        <strong>Mennar Total:</strong> ...\Power_Bi\Datos_Total_2026_Mennar
-                    </li>
+    </div>
+
+    <script>
+        // Reconocimiento de voz (Speech to Text)
+        const micBtn = document.getElementById('micBtn');
+        const userInput = document.getElementById('userInput');
+        const responseBox = document.getElementById('responseBox');
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'es-ES';
+            recognition.continuous = false;
+
+            micBtn.addEventListener('click', () => {
+                recognition.start();
+                micBtn.classList.add('mic-active');
+            });
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                userInput.value = transcript;
+                micBtn.classList.remove('mic-active');
+                enviarConsulta(); // Envía automáticamente al terminar de hablar
+            };
+
+            recognition.onerror = () => {
+                micBtn.classList.remove('mic-active');
+            };
+
+            recognition.onend = () => {
+                micBtn.classList.remove('mic-active');
+            };
+        } else {
+            micBtn.style.display = 'none';
+            console.warn('Reconocimiento de voz no soportado en este navegador.');
+        }
+
+        // Envío de consulta al Backend en Python
+        async function enviarConsulta() {
+            const question = userInput.value.trim();
+            if (!question) return;
+
+            responseBox.innerText = "Pensando y analizando datos de Mennar SAS...";
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/ask', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question: question })
+                });
+
+                const data = await response.json();
+                responseBox.innerText = data.response;
+                
+                // Reproducir automáticamente por voz la respuesta
+                leerRespuesta();
+
+            } catch (error) {
+                responseBox.innerText = "Error al conectar con el servidor backend: " + error.message;
+            }
+        }
+
+        // Síntesis de Voz (Text to Speech)
+        function leerRespuesta() {
+            const texto = responseBox.innerText;
+            if (!texto) return;
+
+            window.speechSynthesis.cancel(); // Detener cualquier lectura previa
+            const utterance = new SpeechSynthesisUtterance(texto);
+            utterance.lang = 'es-ES';
+            utterance.rate = 1.0;
+            window.speechSynthesis.speak(utterance);
+        }
+    </script>
+</body>
+</html>
