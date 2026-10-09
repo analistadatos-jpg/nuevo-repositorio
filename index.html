@@ -196,7 +196,7 @@
         <div class="chat-container">
             <div class="chat-box" id="chatBox">
                 <div class="message bot-message">
-                    Hola, soy el asistente analítico de Mennar SAS. Puedo analizar tu reporte en pantalla y consultar la información consolidada en tu carpeta Power_Bi. ¿Qué consulta deseas realizar?
+                    Hola, soy Analista creada por Inteligencia de Negocios. Dime qué información estás necesitando.
                 </div>
             </div>
 
@@ -333,7 +333,7 @@
                     if (!response.ok) throw new Error(`HTTP Local ${response.status}`);
                 } catch (localErr) {
                     console.error("Error conectando con el backend:", localErr);
-                    const errorMsg = "Ocurrió un problema al conectar con la consola analítica. Verifica que 'python app.py' esté ejecutándose.";
+                    const errorMsg = "Hola, soy Analista creada por Inteligencia de Negocios. Dime qué información estás necesitando.\n\nOcurrió un problema al conectar con la consola analítica. Verifica que 'python app.py' esté ejecutándose.";
                     appendMessage(errorMsg, 'bot-message');
                     speak(errorMsg);
                     return;
