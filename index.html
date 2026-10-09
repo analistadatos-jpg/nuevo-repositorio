@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consola Analítica - Sector Farmacéutico</title>
+    <title>Consola Analítica - Mennar SAS</title>
     <style>
         * {
             margin: 0;
@@ -56,45 +56,43 @@
 
         /* Sección de Accesos de Control (Izquierda) */
         .control-panel {
-            width: 50%;
+            width: 45%;
             height: 100%;
             background-color: #ffffff;
             border-right: 2px solid #e1e8ed;
-            padding: 30px;
+            padding: 25px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 25px;
+            gap: 20px;
         }
 
         .panel-title-center {
             text-align: center;
             color: #0b2545;
-            margin-bottom: 10px;
         }
 
         .panel-title-center h3 {
-            font-size: 1.6rem;
-            margin-bottom: 8px;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
         }
 
         .panel-title-center p {
             color: #64748b;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
-        /* Botón gigante para el Power BI */
         .pbi-big-btn {
             width: 100%;
-            max-width: 450px;
+            max-width: 400px;
             background-color: #f2c811;
             color: #000000;
             text-decoration: none;
-            padding: 25px;
+            padding: 20px;
             border-radius: 12px;
             font-weight: 700;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -106,15 +104,12 @@
         }
 
         .pbi-big-btn:hover {
-            background-color: #e5bd0e;
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(242, 200, 17, 0.4);
         }
 
-        /* Botón de Explorador de Archivos Local */
         .file-input-container {
             width: 100%;
-            max-width: 450px;
+            max-width: 400px;
         }
 
         .file-input-container input[type="file"] {
@@ -129,10 +124,9 @@
             background-color: #ffffff;
             color: #134074;
             border: 2px dashed #134074;
-            padding: 20px;
+            padding: 16px;
             border-radius: 12px;
             font-weight: 600;
-            font-size: 1.1rem;
             cursor: pointer;
             text-align: center;
             transition: all 0.2s;
@@ -140,53 +134,34 @@
 
         .file-custom-btn:hover {
             background-color: #eef4f8;
-            transform: translateY(-2px);
         }
 
-        /* Sección del Agente IA (Derecha) */
+        /* Sección del Agente IA de Voz y Escritura (Derecha) */
         .ai-panel {
-            width: 50%;
+            width: 55%;
             height: 100%;
             display: flex;
             flex-direction: column;
             background-color: #fdfdfd;
-            padding: 25px;
+            padding: 20px;
             overflow-y: auto;
         }
 
-        .ai-header {
-            margin-bottom: 15px;
-        }
-
-        .ai-header h2 {
-            color: #0b2545;
-            font-size: 1.4rem;
-            margin-bottom: 5px;
-        }
-
-        .ai-header p {
-            color: #5c6b73;
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
-        /* Panel de Rutas Rápidas del Servidor */
         .path-box {
             background-color: #f8fafc;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
-            padding: 12px;
-            margin-bottom: 15px;
+            padding: 10px;
+            margin-bottom: 12px;
         }
 
         .path-box h4 {
             color: #1e293b;
             font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 4px;
+            padding-bottom: 2px;
         }
 
         .path-list {
@@ -196,12 +171,11 @@
         }
 
         .path-item {
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             padding: 6px;
             background: #ffffff;
             border-radius: 4px;
-            border-left: 3px solid #64748b;
-            word-break: break-all;
+            border-left: 3px solid #134074;
             cursor: pointer;
             transition: background 0.1s;
         }
@@ -210,88 +184,130 @@
             background: #f1f5f9;
         }
 
-        .path-item strong {
-            color: #0f172a;
-            display: block;
-            margin-bottom: 2px;
+        /* Contenedor del Chat Activo de Voz y Escrito */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-grow: 1;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
-        /* Área de notas/copiado de datos */
-        .notes-area {
-            min-height: 120px;
-            flex-grow: 1;
+        .input-wrapper {
+            position: relative;
             width: 100%;
-            padding: 12px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .notes-area {
+            width: 100%;
+            height: 80px;
+            padding: 10px 45px 10px 10px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
             resize: none;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .mic-btn {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+
+        .mic-active {
+            animation: pulse 1.2s infinite;
+            color: #ef4444;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Consola de Respuestas Internas de la IA */
+        .response-box {
+            flex-grow: 1;
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 12px;
             font-size: 0.9rem;
-            color: #334155;
-            background-color: #fff;
-            margin-bottom: 15px;
+            color: #1e293b;
+            overflow-y: auto;
+            white-space: pre-line;
+            min-height: 100px;
+            line-height: 1.5;
         }
 
-        .notes-area:focus {
-            outline: none;
-            border-color: #1a73e8;
-            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+        .action-row {
+            display: flex;
+            gap: 10px;
         }
 
-        /* Botón de acceso a Gemini */
-        .gemini-btn {
+        .action-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            background-color: #1a73e8;
+            gap: 8px;
             color: white;
             text-decoration: none;
-            padding: 18px;
-            border-radius: 8px;
+            padding: 14px;
+            border-radius: 6px;
             font-weight: 600;
-            font-size: 1.1rem;
-            transition: background-color 0.2s, transform 0.1s;
-            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2);
-            text-align: center;
+            font-size: 0.95rem;
+            cursor: pointer;
+            border: none;
+            transition: opacity 0.2s;
         }
 
-        .gemini-btn:hover {
-            background-color: #1557b0;
+        .action-btn:hover {
+            opacity: 0.9;
         }
+
+        .btn-process { background-color: #0b2545; flex-grow: 1; }
+        .btn-listen { background-color: #475569; }
+        .btn-gemini-mennar { background-color: #1a73e8; flex-grow: 1; }
 
         .footer-note {
             text-align: center;
             font-size: 0.75rem;
             color: #94a3b8;
-            margin-top: 10px;
+            margin-top: 8px;
         }
     </style>
 </head>
 <body>
 
-    <!-- Barra de Navegación -->
     <nav class="navbar">
         <div class="navbar-brand">
-            📊 Plataforma de Control Farmacéutico <span>| Consola de Datos Integrada</span>
+            📊 Plataforma de Control Farmacéutico <span>| Mennar SAS Corporate</span>
         </div>
     </nav>
 
-    <!-- Área de Trabajo de Pantalla Dividida -->
     <div class="main-container">
-        
-        <!-- Panel Izquierdo: Control de Insumos y Dashboard Externo -->
+        <!-- Panel Izquierdo: Gestión de Tableros -->
         <section class="control-panel">
             <div class="panel-title-center">
                 <h3>Visualización e Insumos</h3>
-                <p>Abre el reporte analítico oficial y gestiona tus archivos locales de origen.</p>
+                <p>Gestiona tu cuadro de Power BI y tus fuentes locales de datos.</p>
             </div>
 
-            <!-- Botón de apertura externa garantizada con URL completa de Power BI pública -->
-            <a href="https://app.powerbi.com/view?r=eyJrIjoiMmYzOGJlOWYtMGI2Ny00ZWQ2LTk1OWYtNWU4NzMxYTllY2YyIiwidCI6IjY4NzA5YjE3LWU4NmUtNGI2Ny1iYjhiLWU3ZWM1ODRiYTkxYiIsImMiOjR9&pageName=406adfdcb7a2277f1cb2" target="_blank" class="pbi-big-btn">
+            <a href="https://powerbi.com" target="_blank" class="pbi-big-btn">
                 📈 Abrir Reporte de Power BI ↗
             </a>
 
-            <!-- Botón del Explorador de Archivos Local -->
             <div class="file-input-container">
                 <label for="local-file-picker" class="file-custom-btn">
                     📁 Buscar Archivos en esta Computadora
@@ -300,23 +316,14 @@
             </div>
         </section>
 
-        <!-- Panel Derecho: Interfaz de Operación e IA -->
+        <!-- Panel Derecho: Chat Completo con Entrada/Salida de Voz e Integración Mennar -->
         <section class="ai-panel">
-            <div class="ai-header">
-                <h2>Asistente Operativo Inteligente</h2>
-                <p>Usa los accesos directos de abajo para saber dónde están alojados los datos analíticos originales de tu PC.</p>
+            <div class="path-box">
+                <h4>📂 Repositorios Locales Mennar SAS (Clic para armar consulta)</h4>
+                <ul class="path-list">
+                    <li class="path-item" onclick="cargarEntornoMennar('Mennar Total', 'C:\\Users\\ADMIN\\Downloads\\Analista_Datos_Informacion_2025_2026\\Equipos_Inteligencia_De_Negocio_2_07_2026\\Informacion\\Power_Bi\\Datos_Total_2026_Mennar\\Datos_Total_2026_Mennar')"><strong>Mennar Total:</strong> ...\Power_Bi\Datos_Total_2026_Mennar</li>
+                    <li class="path-item" onclick="cargarEntornoMennar('Financieros', 'C:\\Users\\ADMIN\\Downloads\\Analista_Datos_Informacion_2025_2026\\Equipos_Inteligencia_De_Negocio_2_07_2026\\Informacion\\Power_Bi\\Financieros')"><strong>Financieros:</strong> ...\Power_Bi\Financieros</li>
+                    <li class="path-item" onclick="cargarEntornoMennar('Inventario y Costos', 'C:\\Users\\ADMIN\\Downloads\\Analista_Datos_Informacion_2025_2026\\Equipos_Inteligencia_De_Negocio_2_07_2026\\Informacion\\Power_Bi\\Inventario_Costos_por Punto')"><strong>Inventario_Costos_por Punto:</strong> ...\Power_Bi\Inventario_Costos_por Punto</li>
+                </ul>
             </div>
 
-            <!-- Panel de Rutas de Datos Locales Corporativos -->
-            <div class="path-box">
-                <h4>📂 Repositorio Local de Datos (Origen)</h4>
-                <ul class="path-list">
-                    <li class="path-item" onclick="copiarRuta(this)">
-                        <strong>Mennar Total:</strong> C:\Users\ADMIN\Downloads\Analista_Datos_Informacion_2025_2026\Equipos_Inteligencia_De_Negocio_2_07_2026\Informacion\Power_Bi\Datos_Total_2026_Mennar\Datos_Total_2026_Mennar
-                    </li>
-                    <li class="path-item" onclick="copiarRuta(this)">
-                        <strong>Datos CSV 2:</strong> C:\Users\ADMIN\Downloads\Analista_Datos_Informacion_2025_2026\Equipos_Inteligencia_De_Negocio_2_07_2026\Informacion\Power_Bi\Datos_Total_2026_Mennar\Datos_Total_2026 CVS2
-                    </li>
-                    <li class="path-item" onclick="copiarRuta(this)">
-                        <strong>Financieros:</strong> C:\Users\ADMIN\Downloads\Analista_Datos_Informacion_2025_2026\Equipos_Inteligencia_De_Negocio_2_07_2026\Informacion\Power_Bi\Financieros
-                    </li>
