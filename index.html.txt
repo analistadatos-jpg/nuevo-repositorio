@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consola Analítica - Sector Farmacéutico</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            overflow: hidden;
+            background-color: #f4f6f9;
+        }
+
+        /* Barra de navegación superior */
+        .navbar {
+            height: 60px;
+            background-color: #0b2545;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            z-index: 10;
+            position: relative;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .navbar-brand span {
+            color: #8da9c4;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        /* Contenedor principal de pantalla dividida */
+        .main-container {
+            display: flex;
+            height: calc(100vh - 60px);
+            width: 100%;
+        }
+
+        /* Sección del Dashboard (Izquierda) */
+        .dashboard-panel {
+            width: 60%;
+            height: 100%;
+            background-color: #ffffff;
+            border-right: 2px solid #e1e8ed;
+        }
+
+        .dashboard-panel iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Sección del Agente IA (Derecha) */
+        .ai-panel {
+            width: 40%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background-color: #fdfdfd;
+            padding: 25px;
+        }
+
+        .ai-header {
+            margin-bottom: 20px;
+        }
+
+        .ai-header h2 {
+            color: #0b2545;
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+        }
+
+        .ai-header p {
+            color: #5c6b73;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* Zona de instrucciones interactivas */
+        .instruction-box {
+            background-color: #eef4f8;
+            border-left: 4px solid #134074;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .instruction-box h4 {
+            color: #134074;
+            margin-bottom: 5px;
+            font-size: 0.95rem;
+        }
+
+        .instruction-box ul {
+            list-style-type: none;
+            font-size: 0.85rem;
+            color: #2f3e46;
+        }
+
+        .instruction-box li {
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .instruction-box li::before {
+            content: "•";
+            color: #134074;
+            font-weight: bold;
+        }
+
+        /* Botón de Explorador de Archivos Local */
+        .file-input-container {
+            margin-bottom: 15px;
+        }
+
+        /* Ocultamos el input feo nativo */
+        .file-input-container input[type="file"] {
+            display: none;
+        }
+
+        /* Estilo del botón personalizado para el explorador */
+        .file-custom-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: #ffffff;
+            color: #134074;
+            border: 2px dashed #134074;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .file-custom-btn:hover {
+            background-color: #eef4f8;
+        }
+
+        /* Área de notas/copiado de datos */
+        .notes-area {
+            flex-grow: 1;
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            resize: none;
+            font-size: 0.9rem;
+            color: #334155;
+            background-color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .notes-area:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+        }
+
+        /* Botón de acceso sólido a Gemini */
+        .gemini-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background-color: #1a73e8;
+            color: white;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2);
+            text-align: center;
+        }
+
+        .gemini-btn:hover {
+            background-color: #1557b0;
+        }
+
+        .gemini-btn:active {
+            transform: scale(0.98);
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra de Navegación -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            📊 Plataforma de Control Farmacéutico <span>| Consola de Datos Integrada</span>
+        </div>
+    </nav>
+
+    <!-- Área de Trabajo de Pantalla Dividida -->
+    <div class="main-container">
+        
+        <!-- Panel Izquierdo: Power BI Público -->
+        <section class="dashboard-panel">
+            <iframe 
+                title="Reporte Farmacéutico - Ejecución e Ingresos" 
+                src="https://powerbi.com" 
+                allowFullScreen="true">
+            </iframe>
+        </section>
+
+        <!-- Panel Derecho: Interfaz de Operación -->
+        <section class="ai-panel">
+            <div class="ai-header">
+                <h2>Asistente Operativo</h2>
+                <p>Usa esta consola corporativa para auditar los reportes, buscar tus bases de datos y analizarlas con IA.</p>
+            </div>
+
+            <!-- Botón del Explorador de Archivos Local -->
+            <div class="file-input-container">
+                <label for="local-file-picker" class="file-custom-btn">
+                    📁 Buscar Archivos en esta Computadora
+                </label>
+                <!-- Acepta archivos excel, csv y pdf -->
+                <input type="file" id="local-file-picker" accept=".xlsx, .xls, .csv, .pdf" onchange="mostrarNombre(this)">
+            </div>
+
+            <div class="instruction-box">
+                <h4>Flujo de Trabajo Simplificado:</h4>
+                <ul>
+                    <li>Filtra los datos visuales en el reporte de la izquierda.</li>
+                    <li>Usa el botón de arriba para buscar tus archivos locales rápidamente.</li>
+                    <li>Ábrelos, copia la información relevante o redacta tus dudas en el cuadro de abajo.</li>
+                    <li>Envía tu análisis final o consulta al Gemini de la empresa usando el botón azul.</li>
+                </ul>
+            </div>
+
+            <!-- Espacio para que el usuario redacte o copie datos -->
+            <textarea class="notes-area" id="user-notes" placeholder="Escribe aquí tus preguntas o pega los datos numéricos extraídos para el análisis farmacéutico..."></textarea>
+
+            <!-- Botón directo al entorno seguro de Gemini -->
+            <a href="https://google.com" target="_blank" class="gemini-btn">
+                🤖 Enviar Consulta a Gemini Corporativo ↗
+            </a>
+            
+            <p class="footer-note">Protección de datos garantizada a través del entorno de Google Workspace de tu empresa.</p>
+        </section>
+
+    </div>
+
+    <script>
+        // Función sencilla para actualizar el texto del botón al seleccionar un archivo
+        function mostrarNombre(input) {
+            if (input.files && input.files[0]) {
+                const nombreArchivo = input.files[0].name;
+                document.querySelector('.file-custom-btn').innerHTML = `✅ Seleccionado: <strong>${nombreArchivo}</strong>`;
+                document.querySelector('.file-custom-btn').style.borderStyle = 'solid';
+                document.querySelector('.file-custom-btn').style.borderColor = '#10b981';
+                document.querySelector('.file-custom-btn').style.color = '#10b981';
+            }
+        }
+    </script>
+
+</body>
+</html>
