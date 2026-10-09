@@ -51,7 +51,7 @@
             overflow: hidden;
         }
 
-        /* Dashboard de Power BI */
+        /* Contenedor Power BI */
         .dashboard-container {
             flex: 3;
             background-color: #ffffff;
@@ -66,7 +66,7 @@
             display: block;
         }
 
-        /* Panel Lateral de Chat/Voz */
+        /* Panel Lateral de Chat */
         .chat-container {
             flex: 1;
             min-width: 340px;
@@ -179,21 +179,21 @@
     </header>
 
     <div class="container">
-        <!-- Power BI Dashboard Incorporado -->
+        <!-- Dashboard Power BI con el enlace actualizado -->
         <div class="dashboard-container">
             <iframe 
                 title="Power BI Dashboard Mennar SAS" 
-                src="https://app.powerbi.com/view?r=eyJrIjoiMDllNmM1ODUtMDM1YS00YzE2LThjYWItOTY3ZTlmYzkxYWViIiwidCI6IjI0YzRmMjViLTk1MDYtNGFjMS05MmExLThlYzljNmFiYmFlZSIsImMiOjR9" 
+                src="https://app.powerbi.com/view?r=eyJrIjoiMmYzOGJlOWYtMGI2Ny00ZWQ2LTk1OWYtNWU4NzMxYTllY2YyIiwidCI6IjY4NzA5YjE3LWU4NmUtNGI2Ny1iYjhiLWU3ZWM1ODRiYTkxYiIsImMiOjR9&pageName=406adfdcb7a2277f1cb2" 
                 frameborder="0" 
                 allowFullScreen="true">
             </iframe>
         </div>
 
-        <!-- Panel del Asistente por Voz e Interacción -->
+        <!-- Chat del Asistente -->
         <div class="chat-container">
             <div class="chat-box" id="chatBox">
                 <div class="message bot-message">
-                    Hola, soy tu asistente de datos. Puedes hacerme preguntas por escrito o usando el micrófono.
+                    Hola, soy el asistente analítico de Mennar SAS. Puedes hacerme preguntas por escrito o usando el micrófono.
                 </div>
             </div>
 
@@ -206,13 +206,11 @@
     </div>
 
     <script>
-        // Endpoint del túnel ngrok hacia tu servidor Flask
         const BACKEND_URL = 'https://polish-capitol-construct.ngrok-free.dev/ask';
 
         let recognition;
         let isRecording = false;
 
-        // Configuración de Reconocimiento de Voz (Web Speech API)
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRecognition();
@@ -227,7 +225,7 @@
             };
 
             recognition.onerror = (event) => {
-                console.error("Error en el reconocimiento de voz:", event.error);
+                console.error("Error micrófono:", event.error);
                 stopRecording();
             };
 
@@ -237,7 +235,6 @@
         } else {
             const micBtn = document.getElementById('micBtn');
             if (micBtn) micBtn.style.display = 'none';
-            console.warn("Este navegador no soporta reconocimiento de voz.");
         }
 
         function toggleRecognition() {
@@ -250,7 +247,7 @@
                     recognition.start();
                     startRecording();
                 } catch(e) {
-                    console.error("Error al iniciar micrófono:", e);
+                    console.error("Error al activar micrófono:", e);
                 }
             }
         }
@@ -280,7 +277,7 @@
 
         function speak(text) {
             if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel(); // Cancelar síntesis previas
+                window.speechSynthesis.cancel();
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = 'es-ES';
                 utterance.rate = 1.0;
@@ -309,14 +306,14 @@
                 }
 
                 const data = await response.json();
-                const botReply = data.response || "No recibí respuesta del servidor.";
+                const botReply = data.response || "No recibí respuesta.";
 
                 appendMessage(botReply, 'bot-message');
                 speak(botReply);
 
             } catch (err) {
-                console.error("Error al comunicarse con el backend:", err);
-                const errorMsg = "Ocurrió un problema de conexión con el backend local.";
+                console.error("Error conectando al backend:", err);
+                const errorMsg = "Ocurrió un problema de comunicación con el backend.";
                 appendMessage(errorMsg, 'bot-message');
                 speak(errorMsg);
             }
