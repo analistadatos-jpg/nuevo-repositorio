@@ -92,7 +92,7 @@
             align-items: center;
             justify-content: center;
             gap: 15px;
-            box-shadow: 0 6px 16px rgba(242, 200, 17, 0.25);
+            box-shadow: 0 6px 166px rgba(242, 200, 17, 0.25);
             transition: all 0.2s;
             border: 2px solid #dcb50f;
         }
@@ -154,22 +154,33 @@
             text-transform: uppercase;
             margin-bottom: 6px;
             border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 2px;
+            padding-bottom: 4px;
         }
 
         .path-list {
             list-style: none;
             font-size: 0.78rem;
             color: #475569;
+            max-height: 150px;
+            overflow-y: auto;
         }
 
         .path-item {
-            margin-bottom: 4px;
-            padding: 5px;
+            margin-bottom: 5px;
+            padding: 6px;
             background: #ffffff;
             border-radius: 4px;
-            border-left: 3px solid #134074;
+            border-left: 3px solid #ef4444;
             cursor: pointer;
+            transition: background 0.1s;
+        }
+
+        .path-item.corporate {
+            border-left-color: #134074;
+        }
+
+        .path-item:hover {
+            background: #f1f5f9;
         }
 
         /* Interfaz de Chat Fija */
@@ -276,7 +287,7 @@
 
     <nav class="navbar">
         <div class="navbar-brand">
-            📊 Plataforma de Control Farmacéutico <span>| Asistente Virtual Inteligente</span>
+            📊 Plataforma de Control Farmacéutico <span>| Mennar SAS Corporate</span>
         </div>
     </nav>
 
@@ -305,15 +316,13 @@
             <div class="path-box">
                 <h4>📂 Repositorios Locales Mennar SAS (Clic para armar consulta)</h4>
                 <ul class="path-list">
-                    <li class="path-item" onclick="cargarEntornoMennar('Mennar Total', 'C:\\Users\\ADMIN\\Downloads\\Analista_Datos_Informacion_2025_2026\\Equipos_Inteligencia_De_Negocio_2_07_2026\\Informacion\\Power_Bi\\Datos_Total_2026_Mennar\\Datos_Total_2026_Mennar')"><strong>Mennar Total:</strong> ...\Power_Bi\Datos_Total_2026_Mennar</li>
-                    <li class="path-item" onclick="cargarEntornoMennar('Financieros', 'C:\\Users\\ADMIN\\Downloads\\Analista_Datos_Informacion_2025_2026\\Equipos_Inteligencia_De_Negocio_2_07_2026\\Informacion\\Power_Bi\\Financieros')"><strong>Financieros:</strong> ...\Power_Bi\Financieros</li>
-                    <li class="path-item" onclick="cargarEntornoMennar('Inventario y Costos', 'C:\\Users\\ADMIN\\Downloads\\Analista_Datos_Informacion_2025_2026\\Equipos_Inteligencia_De_Negocio_2_07_2026\\Informacion\\Power_Bi\\Inventario_Costos_por Punto')"><strong>Inventario_Costos_por Punto:</strong> ...\Power_Bi\Inventario_Costos_por Punto</li>
-                </ul>
-            </div>
-
-            <div class="chat-container">
-                <div class="input-wrapper">
-                    <textarea class="notes-area" id="user-notes" placeholder="Escribe tu consulta o presiona el micrófono para hablar..."></textarea>
-                    <button class="mic-btn" id="start-record-btn" title="Dictar por Voz">🎙️</button>
-                </div>
-
+                    <!-- Ruta de la APP priorizada en color rojo de alerta visual -->
+                    <li class="path-item" onclick="cargarEntornoMennar('Entorno de la APP principal', 'C:\\Users\\ADMIN\\Downloads\\Analista_Datos_Informacion_2025_2026\\Equipos_Inteligencia_De_Negocio_2_07_2026\\Informacion\\Power_Bi\\App_1604_2026')">
+                        <strong>📍 Directorio de la APP 2026:</strong> ...\Power_Bi\App_1604_2026
+                    </li>
+                    <li class="path-item corporate" onclick="cargarEntornoMennar('Mennar Total', 'C:\\Users\\ADMIN\\Downloads\\Analista_Datos_Informacion_2025_2026\\Equipos_Inteligencia_De_Negocio_2_07_2026\\Informacion\\Power_Bi\\Datos_Total_2026_Mennar\\Datos_Total_2026_Mennar')">
+                        <strong>Mennar Total:</strong> ...\Power_Bi\Datos_Total_2026_Mennar
+                    </li>
+                    <li class="path-item corporate" onclick="cargarEntornoMennar('Financieros', 'C:\\Users\\ADMIN\\Downloads\\Analista_Datos_Informacion_2025_2026\\Equipos_Inteligencia_De_Negocio_2_07_2026\\Informacion\\Power_Bi\\Financieros')">
+                        <strong>Financieros:</strong> ...\Power_Bi\Financieros
+                    </li>
