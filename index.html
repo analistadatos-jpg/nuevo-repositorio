@@ -100,6 +100,7 @@
             font-size: 0.92rem;
             line-height: 1.45;
             word-wrap: break-word;
+            white-space: pre-wrap;
         }
 
         .user-message {
@@ -194,9 +195,7 @@
         <!-- Consola de Conversación -->
         <div class="chat-container">
             <div class="chat-box" id="chatBox">
-                <div class="message bot-message">
-                    Hola, soy el asistente analítico de Mennar SAS. Puedo analizar tu reporte en pantalla y consultar la información consolidada en tu carpeta Power_Bi. ¿Qué consulta deseas realizar?
-                </div>
+                <div class="message bot-message">Hola, soy el asistente analítico de Mennar SAS. Puedo analizar tu reporte en pantalla y consultar la información consolidada en tu carpeta Power_Bi. ¿Qué consulta deseas realizar?</div>
             </div>
 
             <div class="controls">
@@ -208,8 +207,9 @@
     </div>
 
     <script>
-        // URL del túnel ngrok configurado
-        const BACKEND_URL = 'https://polish-capitol-construct.ngrok-free.dev/ask';
+        // URLs del Backend (Túnel ngrok y Local de Respaldo)
+        const NGROK_URL = 'https://polish-capitol-construct.ngrok-free.dev/ask';
+        const LOCAL_URL = 'http://127.0.0.1:5000/ask';
 
         let recognition;
         let isRecording = false;
@@ -298,7 +298,7 @@
             appendMessage(question, 'user-message');
             input.value = '';
 
-            // Captura de pantalla automática del dashboard (Visión IA)
+            // Captura de pantalla automática del dashboard
             let imageBase64 = null;
             try {
                 const dashArea = document.getElementById('dashArea');
@@ -308,29 +308,44 @@
                 console.warn("No se pudo capturar la imagen del área de trabajo:", e);
             }
 
+            const payload = JSON.stringify({ 
+                question: question,
+                image: imageBase64
+            });
+
+            const headers = { 
+                'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true'
+            };
+
+            let response;
             try {
-                const response = await fetch(BACKEND_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        question: question,
-                        image: imageBase64
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Error HTTP: ${response.status}`);
+                // Intento 1: A través del túnel ngrok
+                response = await fetch(NGROK_URL, { method: 'POST', headers: headers, body: payload });
+                if (!response.ok) throw new Error(`HTTP ngrok ${response.status}`);
+            } catch (ngrokErr) {
+                console.warn("Fallo ngrok, intentando conexión local de respaldo...", ngrokErr);
+                try {
+                    // Intento 2: Conexión local en puerto 5000
+                    response = await fetch(LOCAL_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload });
+                    if (!response.ok) throw new Error(`HTTP Local ${response.status}`);
+                } catch (localErr) {
+                    console.error("Error conectando con el backend:", localErr);
+                    const errorMsg = "Ocurrió un problema al conectar con la consola analítica. Asegúrate de ejecutar 'python app.py'.";
+                    appendMessage(errorMsg, 'bot-message');
+                    speak(errorMsg);
+                    return;
                 }
+            }
 
+            try {
                 const data = await response.json();
                 const botReply = data.response || "No se obtuvo respuesta.";
-
                 appendMessage(botReply, 'bot-message');
                 speak(botReply);
-
-            } catch (err) {
-                console.error("Error conectando con el backend:", err);
-                const errorMsg = "Ocurrió un problema al conectar con la consola analítica.";
+            } catch (parseErr) {
+                console.error("Error parseando la respuesta:", parseErr);
+                const errorMsg = "Ocurrió un error leyendo la respuesta del servidor.";
                 appendMessage(errorMsg, 'bot-message');
                 speak(errorMsg);
             }
