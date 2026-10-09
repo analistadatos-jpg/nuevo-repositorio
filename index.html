@@ -51,7 +51,7 @@
             overflow: hidden;
         }
 
-        /* Contenedor Power BI */
+        /* Dashboard de Power BI */
         .dashboard-container {
             flex: 3;
             background-color: #ffffff;
@@ -66,7 +66,7 @@
             display: block;
         }
 
-        /* Contenedor Asistente IA */
+        /* Panel Lateral de Chat/Voz */
         .chat-container {
             flex: 1;
             min-width: 340px;
@@ -179,7 +179,7 @@
     </header>
 
     <div class="container">
-        <!-- Power BI Dashboard Incorporado con Blindaje de Carga -->
+        <!-- Power BI Dashboard Incorporado -->
         <div class="dashboard-container">
             <iframe 
                 title="Power BI Dashboard Mennar SAS" 
@@ -189,7 +189,7 @@
             </iframe>
         </div>
 
-        <!-- Panel del Asistente de IA (Texto / Voz) -->
+        <!-- Panel del Asistente por Voz e Interacción -->
         <div class="chat-container">
             <div class="chat-box" id="chatBox">
                 <div class="message bot-message">
@@ -206,13 +206,13 @@
     </div>
 
     <script>
-        // Endpoint dinámico ngrok apuntando al backend local
+        // Endpoint del túnel ngrok hacia tu servidor Flask
         const BACKEND_URL = 'https://polish-capitol-construct.ngrok-free.dev/ask';
 
         let recognition;
         let isRecording = false;
 
-        // Configuración de Web Speech API para reconocimiento por voz
+        // Configuración de Reconocimiento de Voz (Web Speech API)
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRecognition();
@@ -227,7 +227,7 @@
             };
 
             recognition.onerror = (event) => {
-                console.error("Error en reconocimiento de voz:", event.error);
+                console.error("Error en el reconocimiento de voz:", event.error);
                 stopRecording();
             };
 
@@ -237,7 +237,7 @@
         } else {
             const micBtn = document.getElementById('micBtn');
             if (micBtn) micBtn.style.display = 'none';
-            console.warn("Navegador no soporta Web Speech API");
+            console.warn("Este navegador no soporta reconocimiento de voz.");
         }
 
         function toggleRecognition() {
@@ -250,7 +250,7 @@
                     recognition.start();
                     startRecording();
                 } catch(e) {
-                    console.error(e);
+                    console.error("Error al iniciar micrófono:", e);
                 }
             }
         }
@@ -280,7 +280,7 @@
 
         function speak(text) {
             if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
+                window.speechSynthesis.cancel(); // Cancelar síntesis previas
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = 'es-ES';
                 utterance.rate = 1.0;
@@ -305,7 +305,7 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error(`Error en el servidor backend (${response.status})`);
+                    throw new Error(`Error en el servidor (${response.status})`);
                 }
 
                 const data = await response.json();
@@ -315,8 +315,8 @@
                 speak(botReply);
 
             } catch (err) {
-                console.error(err);
-                const errorMsg = "Ocurrió un problema al conectar con el backend local.";
+                console.error("Error al comunicarse con el backend:", err);
+                const errorMsg = "Ocurrió un problema de conexión con el backend local.";
                 appendMessage(errorMsg, 'bot-message');
                 speak(errorMsg);
             }
