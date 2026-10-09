@@ -225,7 +225,7 @@
     <!-- Área de Trabajo de Pantalla Dividida -->
     <div class="main-container">
         
-        <!-- Panel Izquierdo: Power BI Público -->
+        <!-- Panel Izquierdo: Power BI Público Restablecido Completamente -->
         <section class="dashboard-panel">
             <iframe 
                 title="Reporte Farmacéutico - Ejecución e Ingresos" 
@@ -246,17 +246,16 @@
                 <label for="local-file-picker" class="file-custom-btn">
                     📁 Buscar Archivos en esta Computadora
                 </label>
-                <!-- Acepta archivos excel, csv y pdf -->
                 <input type="file" id="local-file-picker" accept=".xlsx, .xls, .csv, .pdf" onchange="mostrarNombre(this)">
             </div>
 
             <div class="instruction-box">
                 <h4>Flujo de Trabajo Simplificado:</h4>
                 <ul>
-                    <li>Filtra los datos visuales en el reporte de la izquierda.</li>
-                    <li>Usa el botón de arriba para buscar tus archivos locales rápidamente.</li>
-                    <li>Ábrelos, copia la información relevante o redacta tus dudas en el cuadro de abajo.</li>
-                    <li>Envía tu análisis final o consulta al Gemini de la empresa usando el botón azul.</li>
+                    <li>Filtra los datos visuales en el reporte de la izquierda de manera interactiva.</li>
+                    <li>Usa el buscador superior para rastrear tus bases de datos o PDFs en tu PC.</li>
+                    <li>Redacta tus hallazgos o pega apuntes clave abajo en el cuadro de texto.</li>
+                    <li>Envía tu análisis final o consulta al Gemini seguro de tu empresa.</li>
                 </ul>
             </div>
 
@@ -274,7 +273,6 @@
     </div>
 
     <script>
-        // Función sencilla para actualizar el texto del botón al seleccionar un archivo
         function mostrarNombre(input) {
             if (input.files && input.files[0]) {
                 const nombreArchivo = input.files[0].name;
