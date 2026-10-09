@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consola Analítica & Asistente de Voz - Mennar SAS</title>
+    <!-- Librería para captura visual del dashboard (Ojos del asistente) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -51,7 +53,7 @@
             overflow: hidden;
         }
 
-        /* Contenedor Power BI */
+        /* Contenedor principal de Power BI */
         .dashboard-container {
             flex: 3;
             background-color: #ffffff;
@@ -66,7 +68,7 @@
             display: block;
         }
 
-        /* Panel Lateral de Chat */
+        /* Panel lateral de la Consola e Inteligencia Artificial */
         .chat-container {
             flex: 1;
             min-width: 340px;
@@ -179,8 +181,8 @@
     </header>
 
     <div class="container">
-        <!-- Dashboard Power BI con el enlace actualizado -->
-        <div class="dashboard-container">
+        <!-- Visualización del Reporte de Power BI -->
+        <div class="dashboard-container" id="dashArea">
             <iframe 
                 title="Power BI Dashboard Mennar SAS" 
                 src="https://app.powerbi.com/view?r=eyJrIjoiMmYzOGJlOWYtMGI2Ny00ZWQ2LTk1OWYtNWU4NzMxYTllY2YyIiwidCI6IjY4NzA5YjE3LWU4NmUtNGI2Ny1iYjhiLWU3ZWM1ODRiYTkxYiIsImMiOjR9&pageName=406adfdcb7a2277f1cb2" 
@@ -189,11 +191,11 @@
             </iframe>
         </div>
 
-        <!-- Chat del Asistente -->
+        <!-- Panel Lateral Interactivo -->
         <div class="chat-container">
             <div class="chat-box" id="chatBox">
                 <div class="message bot-message">
-                    Hola, soy el asistente analítico de Mennar SAS. Puedes hacerme preguntas por escrito o usando el micrófono.
+                    Hola, soy el asistente analítico de Mennar SAS. Puedo analizar tu reporte en pantalla y consultar la información consolidada en tu carpeta Power_Bi. ¿Qué consulta deseas realizar?
                 </div>
             </div>
 
@@ -206,11 +208,13 @@
     </div>
 
     <script>
+        // URL base para la conexión con el servidor Flask
         const BACKEND_URL = 'https://polish-capitol-construct.ngrok-free.dev/ask';
 
         let recognition;
         let isRecording = false;
 
+        // Configuración del Reconocimiento de Voz
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRecognition();
@@ -247,7 +251,7 @@
                     recognition.start();
                     startRecording();
                 } catch(e) {
-                    console.error("Error al activar micrófono:", e);
+                    console.error("No se pudo iniciar el micrófono:", e);
                 }
             }
         }
@@ -294,11 +298,24 @@
             appendMessage(question, 'user-message');
             input.value = '';
 
+            // Captura visual del área del tablero (Visión del Asistente)
+            let imageBase64 = null;
+            try {
+                const dashArea = document.getElementById('dashArea');
+                const canvas = await html2canvas(dashArea, { useCORS: true, logging: false });
+                imageBase64 = canvas.toDataURL('image/jpeg', 0.85);
+            } catch (e) {
+                console.warn("No se pudo capturar la imagen visual:", e);
+            }
+
             try {
                 const response = await fetch(BACKEND_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ question: question })
+                    body: JSON.stringify({ 
+                        question: question,
+                        image: imageBase64
+                    })
                 });
 
                 if (!response.ok) {
@@ -313,7 +330,7 @@
 
             } catch (err) {
                 console.error("Error conectando al backend:", err);
-                const errorMsg = "Ocurrió un problema de comunicación con el backend.";
+                const errorMsg = "Ocurrió un problema de comunicación con la consola analítica.";
                 appendMessage(errorMsg, 'bot-message');
                 speak(errorMsg);
             }
